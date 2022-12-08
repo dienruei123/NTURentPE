@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react"
 // import logo from "./logo.svg"
 // import "./App.css"
@@ -9,6 +10,11 @@ import Login from "./components/Login"
 import Register from "./containers/Register"
 import Calendar from "./containers/Calendar"
 import { AppBar } from "@mui/material"
+=======
+import React from 'react'
+import logo from './logo.svg';
+import './App.css';
+>>>>>>> 42a5f36 (frontend1)
 
 const App = () => {
   return (
