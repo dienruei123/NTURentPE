@@ -6,19 +6,8 @@
   "author": "dienruei123 <dienruei@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "cd frontend && npm start",
-<<<<<<< HEAD
-    "server": "cd backend && npm run server",
+    "start": "cd frontend && yarn start",
+    "server": "cd backend && yarn server",
     "install": "cd frontend && yarn && cd ../backend && yarn"
-=======
-    "server": "cd backend && npm run server"
-  },
-  "dependencies": {
-    "react-dom": "^18.2.0",
-    "react-scripts": "^2.1.3"
-  },
-  "devDependencies": {
-    "web-vitals": "^3.1.0"
->>>>>>> 42a5f36 (frontend1)
   }
 }
