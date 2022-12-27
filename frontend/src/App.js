@@ -7,6 +7,7 @@ import HomePage from "./containers/HomePage"
 // import Login from "./containers/Login"
 import Login from "./components/Login"
 import Register from "./containers/Register"
+import Calendar from "./containers/Calendar"
 import { AppBar } from "@mui/material"
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
+        <Route exact path="/calendar" element={<Calendar />} />
       </Routes>
     </BrowserRouter>
   )

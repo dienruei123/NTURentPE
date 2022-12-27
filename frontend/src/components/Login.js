@@ -118,6 +118,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => navigate("/calendar")}
             >
               Sign In
             </Button>
