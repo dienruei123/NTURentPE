@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import Button from "@mui/material/Button"
-import Envelope from "../components/Envelope"
 import AppBar from "../components/AppBar"
+import MyCalendar from "./Calendar"
+import { Box } from "@mui/system"
 // import "./w3.css"
 
 const Wrapper = styled.div`
@@ -18,10 +19,18 @@ const Wrapper = styled.div`
 `
 
 const Homepage = () => {
+  const [signIn, setSignIn] = useState(true)
   return (
     <Wrapper>
-      <AppBar />
-      <Envelope />
+      <AppBar signIn={signIn} />
+      {/* <Envelope /> */}
+      <Box
+        sx={{
+          top: "100px",
+        }}
+      >
+        {signIn ? <MyCalendar /> : <></>}
+      </Box>
     </Wrapper>
   )
 }
