@@ -22,11 +22,15 @@ const Homepage = () => {
   const [signIn, setSignIn] = useState(true)
   return (
     <Wrapper>
-      <AppBar signIn={signIn} />
       {/* <Envelope /> */}
       <Box
         sx={{
-          top: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 12,
+          width: "65%",
+          // border: "1px solid black",
         }}
       >
         {signIn ? <MyCalendar /> : <></>}
