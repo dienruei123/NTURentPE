@@ -32,6 +32,28 @@ export default function ButtonAppBar() {
   //     </div>
   //   )
   // }
+  const Navigation = () => {
+    return (
+      <div className="w3-top">
+        <div className="w3-bar w3-white w3-padding w3-card w3-wide">
+          <p className="w3-bar-item w3-button">Gourmet au Catering</p>
+          {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
+          <div className="w3-right w3-hide-small">
+            <p className="w3-bar-item w3-button" onClick={() => navigate("/login")}>
+              Login
+            </p>
+            <p href="#about" className="w3-bar-item w3-button">
+              About
+            </p>
+            {/* <p href="#menu" class="w3-bar-item w3-button">Menu</p> */}
+            <p href="#contact" className="w3-bar-item w3-button">
+              Contact
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
     <Box sx={{ flexGrow: 1, position: "fixed" }}>
       <AppBar
