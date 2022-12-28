@@ -20,7 +20,19 @@
 
 Frontend:
 
-- [ ] Homepage (a button navigating to login page)
-- [ ] login
+- [x] Homepage (a button navigating to login page)
+- [x] login
 - [ ] register
 - [ ] After successful login, navigate to corresponding user's page
+
+### 12/27
+
+![](images/2021_12_27.jpg)
+
+#### TODOS
+
+- [ ] Register page
+- [ ] routes
+- [ ] participant page
+- [ ] host page
+- [ ] event pages & template
