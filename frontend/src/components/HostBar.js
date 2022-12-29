@@ -3,11 +3,15 @@ import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 import Grid from "@mui/material/Grid"
 import { useNavigate } from "react-router"
+import Notif from "./Notification"
+import Menu from "./Menu"
 
-export default function ButtonAppBar() {
+
+export default function ButtonAppBar( {Username, handleModal} ) {
   const navigate = useNavigate()
   return (
     <Box sx={{ flexGrow: 1, position: "fixed" }}>
@@ -41,15 +45,18 @@ export default function ButtonAppBar() {
             sx={{ cursor: "pointer" }}
             onClick={() => navigate("/")}
           >
-            Event Registration Center
+            {Username}'s Event
           </Typography>
-          <Grid>
-            <Button color="inherit" onClick={() => navigate("/register")}>
-              sign up
-            </Button>
-            <Button color="inherit" onClick={() => navigate("/login")}>
-              Login
-            </Button>
+          <Grid
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <IconButton onClick={handleModal}><AddIcon/></IconButton>
+            <Notif></Notif>
+            <Menu></Menu>
           </Grid>
         </Toolbar>
       </AppBar>

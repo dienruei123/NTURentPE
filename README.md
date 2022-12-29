@@ -33,6 +33,6 @@ Frontend:
 
 - [x] Register page
 - [ ] routes
-- [ ] participant page
+- [x] participant page
 - [ ] host page
 - [ ] event pages & template
