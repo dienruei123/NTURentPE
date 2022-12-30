@@ -1,0 +1,39 @@
+type Query {
+  users(username: String!, passwd: String!): User!
+}
+
+type Mutation {
+  login(username: String!, passwd: String!): User!
+  register(username: String!, passwd: String!, identity: String!): User!
+}
+
+type User {
+  id: ID!
+  username: String!
+  identity: String
+  passwd: String!
+  events: [Event]
+}
+
+type Event {
+  eventname: String!
+  hostname: String
+  eventdate: String!
+  properties: [String]
+  subtitle: String
+  description: String
+  maxparticipants: Int
+
+  participants: [String]
+  rating: Float
+  comments: [Comment]
+  onclicks: Int
+
+  verified: Boolean
+  trending: Boolean
+}
+
+type Comment {
+  sender: String!
+  body: String!
+}
