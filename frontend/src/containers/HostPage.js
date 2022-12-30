@@ -3,6 +3,7 @@ import styled from "styled-components"
 import HostBar from '../components/HostBar'
 import Calendar from '../components/Calendar'
 import Modal from '../components/EventModal'
+import ProposalList from '../components/ProposalList'
 
 const Wrapper = styled.div`
     height: 100%;
@@ -13,19 +14,32 @@ const Wrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-    margin: 100px;
+    margin-top: 100px;
     height: 90%;
     
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    overflow: auto;
+`
+
+const EventWrapper = styled.div`
+    height:100%;
+    width:30%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
     overflow: auto;
 `
 
 const Host = () => {
     const [user, setUser] = useState("Oscar")
-    const [info, setInfo] = useState([{"date": "12/31", "name": "New Year", "subtitle": "time flies", "property":["popular", "nice"]}])
+    const [info, setInfo] = useState([{"date": "12/31", "name": "New Year", "property":"success" }
+    ,{"date": "1/6", "name": "Music Presentation", "property":"progressing"}                        
+    ])
     const [modalOpen, setModalOpen] = useState(false)
 
     const handleModal = () => {
@@ -41,9 +55,9 @@ const Host = () => {
             <BodyWrapper>
                 <Modal open={modalOpen} handleClose={handleClose}/>
                 <Calendar />
-                <div>event1</div>
-                <div>event2</div>
-                <div>event3</div>
+                <EventWrapper>
+                    <ProposalList info={info}></ProposalList>
+                </EventWrapper>
             </BodyWrapper>
         </Wrapper>
     )
