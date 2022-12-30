@@ -21,13 +21,14 @@ export default function AlignItemsList({info}) {
             secondary={data.date}
           />
           <Stack direction="row" spacing={1}>
-            {data.property.map(prop=>(
-              <Chip label={prop} color="primary" variant="outlined" />
-            ))}
+            {data.property === 'success' ?
+              <Chip label={data.property} color="success" variant="outlined" /> :
+              <Chip label={data.property} color="primary" variant="outlined" />
+            }
           </Stack>
         </ListItem>
       
-      )) : <span>No Event!</span>}
+      )) : <span>No Proposal!</span>}
       
     </List>
   );

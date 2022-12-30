@@ -9,6 +9,7 @@ import { TextField } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const style = {
   position: 'absolute',
@@ -30,6 +31,8 @@ const BoxField = styled(Box)({
     mt: 2,
     mb: 2,
 })
+
+const properties = ["entertainment", ]
 
 export default function BasicModal({open, handleClose}) {
   const [time, setTime] = useState()
@@ -59,22 +62,22 @@ export default function BasicModal({open, handleClose}) {
           component="form"
           onSubmit={null}
           noValidate
-          sx={{ mt: 1, width: 300 }}
+          sx={{ mt: 1, width: 550 }}
         >
           <BoxField
             sx={{
+                
                 display: 'flex',
                 alignItems: 'center',
                 mt: 2,
                 mb: 2,
             }}
           >
-            <Typography variant="subtitle1" sx={{mr: 1,}}>Activity Name</Typography>
+            <Typography variant="subtitle1" sx={{width:200, mr: 1,}}>Activity Name</Typography>
             <TextField
               required
               fullWidth
               autoFocus
-              size="small"
               variant="standard"
             />
           </BoxField>
@@ -86,31 +89,56 @@ export default function BasicModal({open, handleClose}) {
                 mb: 2,
             }}
           >
-            <Typography variant="subtitle1" sx={{mr: 1,}}>Activity Date</Typography>
+            <Typography variant="subtitle1" sx={{width: 200, mr: 1,}}>Activity Date</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
-                    label="Date&Time picker"
+                    label="from"
+                    value={time}
+                    onChange={handleTimeChange}
+                    renderInput={(params) => <TextField {...params} />}
+                />
+                <DateTimePicker
+                    label="to"
                     value={time}
                     onChange={handleTimeChange}
                     renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
           </BoxField>
-          <BoxField>
-            <TextField
-              type="password"
-              label="Confirm Password"
-              required
-              fullWidth
-              size="small"
-              // variant="filled"
-              // placeholder="Username"
+          <BoxField
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                mt: 2,
+                mb: 2,
+            }}
+          >
+            <Typography variant="subtitle1" sx={{width: 200, mr: 1,}}>Tag</Typography>
+            <Autocomplete
+              multiple
+              id="tags-standard"
+              options={properties}
+              getOptionLabel={(option) => option}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  sx={{width:450, height:31}}
+                />
+              )}
             />
           </BoxField>
-          {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
+          <BoxField>
+            <Typography variant="subtitle1" sx={{width: 500, mr: 1, mb:2,}}>Activity Description</Typography>
+            <TextField
+              id="outlined-multiline-static"
+              required
+              fullWidth
+              multiline
+              rows={6}
+              placeholder="About Activity..."
+            />
+          </BoxField>
           <Button
             type="submit"
             fullWidth
