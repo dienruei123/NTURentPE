@@ -8,6 +8,6 @@
   "scripts": {
     "start": "cd frontend && yarn start",
     "server": "cd backend && yarn server",
-    "install": "cd frontend && yarn && cd ../backend && yarn"
+    "install:all": "cd frontend && yarn && cd ../backend && yarn"
   }
 }

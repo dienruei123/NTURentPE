@@ -5,6 +5,7 @@ import {
   TextField,
   Typography,
   Avatar,
+  Autocomplete,
   // FormControlLabel,
   // Checkbox,
 } from "@mui/material"
@@ -19,6 +20,8 @@ const BoxField = styled(Box)({
   mb: 2,
 })
 
+const identityOptions = [{ label: "ordinary" }, { label: "host" }]
+
 const Register = (props) => {
   // console.log(
   //   window.innerHeight,
@@ -27,6 +30,7 @@ const Register = (props) => {
   //   window.outerWidth
   // )
   const handleSubmit = (event) => {
+    console.log(event)
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     console.log({
@@ -143,10 +147,24 @@ const Register = (props) => {
               // placeholder="Username"
             />
           </BoxField>
+
+          <Autocomplete
+            disablePortal
+            options={identityOptions}
+            fullWidth
+            renderInput={(params) => (
+              <TextField {...params} label="Identity" size="small" required />
+            )}
+            sx={{
+              mt: 3,
+              mb: 3,
+            }}
+          />
           {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
+
           <Button
             type="submit"
             fullWidth
