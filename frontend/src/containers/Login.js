@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useEffect, useState } from "react"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router"
 import styled from "styled-components"
 
 import Copyright from "../components/customCopyright"
+import { useRent } from "./hooks/useRent"
 
 const theme = createTheme()
 const BoxField = styled(Box)({
@@ -23,13 +24,63 @@ const BoxField = styled(Box)({
 })
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    })
+  const useRentContext = useRent()
+  const [error, setError] = useState(false)
+  const { username, setUsername } = useRentContext
+  const [errUsernameinfo, setErrUsernameinfo] = useState("")
+  const { passwd, setPasswd } = useRentContext
+  const [errPasswdinfo, setErrPasswdinfo] = useState("")
+
+  const { setSignedIn } = useRentContext
+  const [ServerError, setServerError] = useState(false)
+  const [ServerErrorText, setServerErrorText] = useState("")
+
+  const { login } = useRentContext
+
+  useEffect(() => {
+    setPasswd("")
+  }, [])
+
+  const handleSubmit = async () => {
+    // if (error) return
+
+    // console.log(username, passwd)
+    if (!username) {
+      setError(true)
+      setErrUsernameinfo("Username cannot be empty")
+      return
+    }
+    try {
+      const data = await login({
+        variables: {
+          username: username,
+          passwd: passwd,
+        },
+      })
+      // console.log(data, passwd)
+      setPasswd("")
+      // setIdentity(identityOptions[0].label)
+
+      setSignedIn(true)
+      navigate("/")
+    } catch (e) {
+      // console.log(e)
+      setServerError(false)
+      setErrUsernameinfo("")
+      setErrPasswdinfo("")
+
+      if (e.message.includes("USER_NOTFOUND_ERROR")) {
+        setError(true)
+        setErrUsernameinfo(`Username '${username}' not found!!`)
+      } else if (e.message.includes("PASSWORD_INCORRECT_ERROR")) {
+        setError(true)
+        setErrPasswdinfo("Incorrect password")
+      } else {
+        setServerError(true)
+        setServerErrorText("Server error. Please contact admin ASAP.")
+      }
+      // console.log(e.message)
+    }
   }
   const navigate = useNavigate()
 
@@ -45,6 +96,11 @@ export default function SignIn() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSubmit()
+          }
         }}
       >
         <Box
@@ -94,8 +150,8 @@ export default function SignIn() {
             </Link>
           </Typography>
           <Box
-            component="form"
-            onSubmit={handleSubmit}
+            // component="form"
+            // onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1, width: 300 }}
           >
@@ -108,11 +164,15 @@ export default function SignIn() {
               <TextField
                 type="search"
                 label="Username"
-                required
+                // required
                 fullWidth
                 autoFocus
+                error={error}
+                helperText={errUsernameinfo}
                 autoComplete="username"
                 size="small"
+                value={username}
+                onChange={(e) => setUsername(e.currentTarget.value)}
                 // variant="filled"
                 // placeholder="Username"
               />
@@ -126,25 +186,36 @@ export default function SignIn() {
               <TextField
                 type="password"
                 label="Password"
-                required
+                // required
                 fullWidth
                 autoComplete="current-password"
+                error={error}
+                helperText={errPasswdinfo}
                 size="small"
+                value={passwd}
+                onChange={(e) => setPasswd(e.currentTarget.value)}
                 // variant="filled"
                 // placeholder="Username"
               />
             </BoxField>
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
+            {ServerError ? (
+              <Typography color="error" fontSize={14}>
+                {ServerErrorText}
+              </Typography>
+            ) : (
+              <></>
+            )}
             <Button
-              type="submit"
+              // type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => navigate("/")}
+              onClick={() => handleSubmit()}
             >
               Sign In
             </Button>

@@ -8,10 +8,10 @@ type Mutation {
 }
 
 type User {
-  id: ID!
+  id: ID
   username: String!
   identity: String
-  passwd: String!
+  passwd: String
   events: [Event]
 }
 
