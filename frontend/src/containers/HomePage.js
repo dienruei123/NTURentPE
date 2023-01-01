@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import AppBar from "../components/AppBar"
 import MyCalendar from "../components/Calendar"
 import { Box } from "@mui/system"
-// import "./w3.css"
+import { useRent } from "./hooks/useRent"
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,10 +19,9 @@ const Wrapper = styled.div`
 `
 
 const Homepage = () => {
-  const [signIn, setSignIn] = useState(false)
+  const { signedIn, setSignedIn } = useRent()
   return (
     <Wrapper>
-      {/* <Envelope /> */}
       <Box
         sx={{
           display: "flex",
@@ -33,7 +32,7 @@ const Homepage = () => {
           // border: "1px solid black",
         }}
       >
-        {signIn ? <MyCalendar /> : <></>}
+        {signedIn ? <MyCalendar /> : <></>}
       </Box>
     </Wrapper>
   )

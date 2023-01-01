@@ -12,19 +12,13 @@ import Participant from "./containers/ParticipantPage"
 import Host from "./containers/HostPage"
 
 const App = () => {
-  const Appbar = (element) => (
-    <>
-      <AppBar />
-      {element}
-    </>
-  )
   return (
     <BrowserRouter>
+      <AppBar />
       <Routes>
-        <Route exact path="/" element={Appbar(<HomePage />)} />
-        <Route exact path="/login" element={Appbar(<Login />)} />
-        <Route exact path="/register" element={Appbar(<Register />)} />
         <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/register" element={<Register />} />
         <Route exact path="/calendar" element={<Calendar />} />
         <Route exact path="/participant" element={<Participant />} />
         <Route exact path="/host" element={<Host />} />
