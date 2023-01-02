@@ -23,7 +23,7 @@ Frontend:
 - [x] Homepage (a button navigating to login page)
 - [x] login
 - [x] register
-- [ ] After successful login, navigate to corresponding user's page
+- [x] After successful login, navigate to corresponding user's page
 
 ### 12/27
 
@@ -32,7 +32,13 @@ Frontend:
 #### TODOS
 
 - [x] Register page
-- [ ] routes
+- [x] routes
 - [x] participant page
-- [ ] host page
+- [x] host page
 - [ ] event pages & template
+
+### 1/2
+
+- [x] autoLogin(jwtKey)
+- [x] Logout
+- [x] Admin page

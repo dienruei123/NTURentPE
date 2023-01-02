@@ -11,6 +11,8 @@ const UserSchema = new Schema({
   identity: { type: String, required: [true, "Identity field is required."] },
   events: [{ type: Schema.Types.ObjectId, ref: "Events" }],
   // events: [{ type: String }],
+  isLoggedIn: Boolean,
+  loggedInAt: Date,
 })
 const UserModel = mongoose.model("User", UserSchema)
 

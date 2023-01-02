@@ -6,14 +6,8 @@ import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import { useNavigate } from "react-router"
-import Notif from "./Notification"
-import Menu from "./Menu"
-import { useRent } from "../containers/hooks/useRent"
 
-export default function PersonalBar() {
-  const useRentContext = useRent()
-  const { username } = useRentContext
-
+export default function DefaultBar() {
   const navigate = useNavigate()
   return (
     <Box sx={{ flexGrow: 1, position: "fixed" }}>
@@ -47,17 +41,15 @@ export default function PersonalBar() {
             sx={{ cursor: "pointer" }}
             onClick={() => navigate("/")}
           >
-            {username}'s Event
+            Event Registration Center
           </Typography>
-          <Grid
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Notif></Notif>
-            <Menu></Menu>
+          <Grid>
+            <Button color="inherit" onClick={() => navigate("/register")}>
+              sign up
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/login")}>
+              Login
+            </Button>
           </Grid>
         </Toolbar>
       </AppBar>

@@ -36,18 +36,21 @@ const Register = () => {
   const [errConfirmPasswd, setErrConfirmPasswd] = useState(false)
   const [errConfirmPasswdinfo, setErrConfirmPasswdinfo] = useState("")
   const { identity, setIdentity } = useRentContext
-  const { setSignedIn } = useRentContext
+  const { signedIn } = useRentContext
   const [ServerError, setServerError] = useState(false)
   const [ServerErrorText, setServerErrorText] = useState("")
 
+  const { register } = useRent()
   const navigate = useNavigate()
 
-  const { register } = useRent()
+  useEffect(() => {
+    if (signedIn) navigate("/")
+  }, [])
 
   useEffect(() => {
     setPasswd("")
     setConfirmPasswd("")
-    setIdentity(identityOptions[0].label)
+    if (!signedIn) setIdentity(identityOptions[0].label)
   }, [])
 
   const checkPasswd = (pass) => {
@@ -57,6 +60,11 @@ const Register = () => {
   const handleSubmit = async () => {
     // console.log(username, passwd, confirmPasswd, identity)
     if (errUsername || errPasswd || errConfirmPasswd) return
+    if (!username) {
+      setErrUsername(true)
+      setErrUsernameinfo("Username cannot be empty")
+      return
+    }
     if (!passwd) {
       setErrPasswd(true)
       setErrPasswdinfo("Password must contain at least 4 characters")
@@ -69,7 +77,7 @@ const Register = () => {
     }
 
     try {
-      const data = await register({
+      const { data } = await register({
         variables: {
           username: username,
           passwd: passwd,
@@ -81,9 +89,9 @@ const Register = () => {
       setConfirmPasswd("")
       setIdentity(identityOptions[0].label)
 
-      setSignedIn(true)
-      navigate("/")
+      navigate("/login")
     } catch (e) {
+      console.log(e)
       if (e.message.includes("USER_EXISTING_ERROR")) {
         setErrUsername(true)
         setErrUsernameinfo(`Username '${username}' already exists!!`)
@@ -94,7 +102,9 @@ const Register = () => {
       // console.log(e.message)
     }
   }
-  return (
+  return signedIn ? (
+    <></>
+  ) : (
     <Box
       onKeyDown={(e) => {
         if (e.key === "Enter") {
@@ -206,6 +216,7 @@ const Register = () => {
               // required
               fullWidth
               size="small"
+              value={passwd}
               onBlur={(e) => {
                 if (
                   e.currentTarget.value &&
@@ -255,6 +266,7 @@ const Register = () => {
               // required
               fullWidth
               size="small"
+              value={confirmPasswd}
               onBlur={(e) => {
                 if (e.currentTarget.value && e.currentTarget.value === passwd)
                   setConfirmPasswd(e.currentTarget.value)

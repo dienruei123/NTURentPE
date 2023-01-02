@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import HomePage from "./containers/HomePage"
 import Login from "./containers/Login"
@@ -10,9 +10,16 @@ import Register from "./containers/Register"
 import Calendar from "./components/Calendar"
 import Participant from "./containers/ParticipantPage"
 import Host from "./containers/HostPage"
+import Loading from "./components/Loading"
+import { useRent } from "./containers/hooks/useRent"
 
 const App = () => {
-  return (
+  const useRentContext = useRent()
+  const { renderLoading } = useRentContext
+  // console.log(renderLoading)
+  return renderLoading ? (
+    <Loading />
+  ) : (
     <BrowserRouter>
       <AppBar />
       <Routes>
