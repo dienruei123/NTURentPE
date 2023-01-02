@@ -1,58 +1,29 @@
 import * as React from "react"
-import AppBar from "@mui/material/AppBar"
-import Box from "@mui/material/Box"
-import Toolbar from "@mui/material/Toolbar"
-import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
-import Grid from "@mui/material/Grid"
-import { useNavigate } from "react-router"
 
-export default function ButtonAppBar() {
-  const navigate = useNavigate()
-  return (
-    <Box sx={{ flexGrow: 1, position: "fixed" }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          bgcolor: "white",
-          color: "black",
-          boxShadow:
-            "0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%)",
-        }}
-      >
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ cursor: "pointer" }}
-            onClick={() => navigate("/")}
-          >
-            Event Registration Center
-          </Typography>
-          <Grid>
-            <Button color="inherit" onClick={() => navigate("/register")}>
-              sign up
-            </Button>
-            <Button color="inherit" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  )
+import DefaultBar from "./DefaultBar"
+import PersonalBar from "./PersonalBar"
+import HostBar from "./HostBar"
+import { useRent } from "../containers/hooks/useRent"
+
+const ButtonAppBar = () => {
+  const useRentContext = useRent()
+  const { identity } = useRentContext
+  const { signedIn } = useRentContext
+
+  const renderBar = () => {
+    if (!signedIn) return <DefaultBar />
+    switch (identity) {
+      case "Participant":
+        return <PersonalBar />
+      case "Host":
+        return <HostBar />
+      case "Admin":
+        return <PersonalBar />
+      default:
+        throw new Error("INVALID_IDENTITY_ERROR")
+    }
+  }
+  return renderBar()
 }
+
+export default ButtonAppBar

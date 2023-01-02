@@ -1,18 +1,19 @@
 type Query {
-  users(username: String!, passwd: String!): User!
+  users(token: String!): User!
 }
 
 type Mutation {
-  login(username: String!, passwd: String!): User!
+  login(username: String!, passwd: String!): String!
   register(username: String!, passwd: String!, identity: String!): User!
+  logout(username: String!): User!
 }
 
 type User {
   id: ID
   username: String!
   identity: String
-  passwd: String
   events: [Event]
+  isLoggedIn: Boolean
 }
 
 type Event {

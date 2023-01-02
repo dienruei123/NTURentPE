@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import Button from "@mui/material/Button"
-import AppBar from "../components/AppBar"
-import MyCalendar from "../components/Calendar"
-import { Box } from "@mui/system"
 import { useRent } from "./hooks/useRent"
+import Participant from "./ParticipantPage"
+import Host from "./HostPage"
+import Admin from "./AdminPage"
+import { Typography } from "@mui/material"
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,23 +19,40 @@ const Wrapper = styled.div`
 `
 
 const Homepage = () => {
-  const { signedIn, setSignedIn } = useRent()
-  return (
-    <Wrapper>
-      <Box
+  const useRentContext = useRent()
+  const { identity } = useRentContext
+  const { signedIn } = useRentContext
+  const Welcome = () => {
+    return (
+      <Typography
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           mt: 12,
-          width: "65%",
-          // border: "1px solid black",
+          ml: 5,
         }}
       >
-        {signedIn ? <MyCalendar /> : <></>}
-      </Box>
-    </Wrapper>
-  )
+        Welcome to Event Registration Center! Please first create an account and
+        login to activate your own service.
+      </Typography>
+    )
+  }
+  const renderPage = () => {
+    if (!signedIn) return <Welcome />
+    switch (identity) {
+      case "Participant": {
+        return <Participant />
+      }
+      case "Host": {
+        return <Host />
+      }
+      case "Admin": {
+        return <Admin />
+      }
+      default: {
+        throw new Error("INVALID_IDENTITY_ERROR")
+      }
+    }
+  }
+  return <Wrapper>{renderPage()}</Wrapper>
 }
 
 export default Homepage

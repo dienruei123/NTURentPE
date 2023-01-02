@@ -30,13 +30,19 @@ export default function SignIn() {
   const [errUsernameinfo, setErrUsernameinfo] = useState("")
   const { passwd, setPasswd } = useRentContext
   const [errPasswdinfo, setErrPasswdinfo] = useState("")
+  const { signedIn } = useRentContext
+  const { setToken } = useRentContext
+  const { setRenderLoading } = useRentContext
 
-  const { setSignedIn } = useRentContext
   const [ServerError, setServerError] = useState(false)
   const [ServerErrorText, setServerErrorText] = useState("")
 
   const { login } = useRentContext
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    if (signedIn) navigate("/")
+  }, [])
   useEffect(() => {
     setPasswd("")
   }, [])
@@ -51,7 +57,7 @@ export default function SignIn() {
       return
     }
     try {
-      const data = await login({
+      const { data } = await login({
         variables: {
           username: username,
           passwd: passwd,
@@ -61,7 +67,10 @@ export default function SignIn() {
       setPasswd("")
       // setIdentity(identityOptions[0].label)
 
-      setSignedIn(true)
+      // setSignedIn(true)
+      setToken(data.login)
+      // console.log(data.login)
+      setRenderLoading(true)
       navigate("/")
     } catch (e) {
       // console.log(e)
@@ -82,9 +91,10 @@ export default function SignIn() {
       // console.log(e.message)
     }
   }
-  const navigate = useNavigate()
 
-  return (
+  return signedIn ? (
+    <></>
+  ) : (
     <ThemeProvider theme={theme}>
       <Container
         component="main"
