@@ -33,7 +33,7 @@ const RentProvider = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [renderLoading, setRenderLoading] = useState(true)
 
-  const QueryResult = useQuery(USERS_QUERY, {
+  const { data, loading, error } = useQuery(USERS_QUERY, {
     variables: {
       token: token,
     },
@@ -67,12 +67,11 @@ const RentProvider = (props) => {
 
   useEffect(() => {
     localStorage.setItem(LOCALSTORAGE_TOKEN, token)
-    const { data, loading, error } = QueryResult
+    
     // console.log(loading)
     console.log(data)
     setIsLoading(loading)
     if (token && !error && data) {
-      console.log(data)
       const { users } = data
       setSignedIn(true)
       setUsername(users.username)
@@ -81,7 +80,7 @@ const RentProvider = (props) => {
       console.log(error)
       setSignedIn(false)
     }
-  },[QueryResult])
+  })
 
   return (
     <RentContext.Provider
@@ -93,6 +92,7 @@ const RentProvider = (props) => {
         remUser,
         token,
         renderLoading,
+        data,
         setUsername,
         setPasswd,
         setIdentity,

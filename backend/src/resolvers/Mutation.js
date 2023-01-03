@@ -68,19 +68,16 @@ const Mutation = {
     return user
   },
 
-  event: async (
-    parent,
-    { eventname, hostname, eventdatefrom, eventdateto, tags, description },
-    { EventModel }
-  ) => {
+  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, imageURL, description }, {EventModel}) => {
     let event = await new EventModel({
       eventname,
       hostname,
       eventdatefrom,
       eventdateto,
-      tags,
+      imageURL,
       description,
     })
+    tags.map(e=> event.tags.push(e))
     event.save()
     return event
   },
