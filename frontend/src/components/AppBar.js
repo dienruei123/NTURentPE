@@ -1,5 +1,4 @@
 import * as React from "react"
-
 import DefaultBar from "./DefaultBar"
 import PersonalBar from "./PersonalBar"
 import HostBar from "./HostBar"

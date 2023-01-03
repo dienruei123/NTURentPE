@@ -4,6 +4,8 @@ import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import { RentProvider } from "./containers/hooks/useRent"
+import Event from "./containers/EventPage"
+import AllEvent from "./containers/AllEventPage"
 
 import {
   ApolloClient,
@@ -44,6 +46,7 @@ const client = new ApolloClient({
 })
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
+
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>

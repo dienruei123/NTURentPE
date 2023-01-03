@@ -40,5 +40,11 @@ export const EVENT_MUTATION = gql`
           tags
           description
         }
+    }`
+export const ADDTOEVENTLIST_MUTATION = gql`
+  mutation addtoEventlist($username: String!, $eventname: String!) {
+    addtoEventlist(username: $username, eventname: $eventname) {
+      username
     }
+  }
 `

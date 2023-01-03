@@ -4,6 +4,7 @@ import {
   LOGOUT_MUTATION,
   REGISTER_MUTATION,
   EVENT_MUTATION,
+  ADDTOEVENTLIST_MUTATION,
 } from "../../graphql"
 import { createContext, useContext, useEffect, useState } from "react"
 import { USERS_QUERY } from "../../graphql/queries"
@@ -44,6 +45,7 @@ const RentProvider = (props) => {
   const [logout] = useMutation(LOGOUT_MUTATION)
   const [eventcreate] = useMutation(EVENT_MUTATION)
   
+  const [addtoEventlist] = useMutation(ADDTOEVENTLIST_MUTATION)
   //   useEffect(() => {
   //     if (signedIn) {
   //       localStorage.setItem(LOCALSTORAGE_KEY, username)
@@ -76,7 +78,7 @@ const RentProvider = (props) => {
       setUsername(users.username)
       setIdentity(users.identity)
     } else {
-      // console.log(error)
+      console.log(error)
       setSignedIn(false)
     }
   },[QueryResult])
@@ -102,6 +104,7 @@ const RentProvider = (props) => {
         register,
         logout,
         eventcreate,
+        addtoEventlist
       }}
       {...props}
     />
