@@ -97,7 +97,6 @@ export default function SignIn() {
   ) : (
     <ThemeProvider theme={theme}>
       <Container
-        component="main"
         maxWidth="xs"
         sx={{
           height: window.innerHeight,

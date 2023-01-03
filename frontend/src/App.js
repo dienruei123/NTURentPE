@@ -17,9 +17,16 @@ import AllEvent from "./containers/AllEventPage"
 
 const App = () => {
   const useRentContext = useRent()
+  const { username } = useRentContext
+  const { signedIn } = useRentContext
   const { renderLoading } = useRentContext
   const host = {name: "2023", description: "new year"}
   // console.log(renderLoading)
+  useEffect(() => {
+    // document.title = signedIn ? `${username}'s Home` : "Home"
+    // document.title += " | Event Registration Center"
+    document.title = "Event Registration Center"
+  }, [])
   return renderLoading ? (
     <Loading />
   ) : (
