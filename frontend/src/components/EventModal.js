@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
@@ -11,13 +11,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
 import Autocomplete from "@mui/material/Autocomplete"
 import { useNavigate } from "react-router"
+import { useRent } from "../containers/hooks/useRent"
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: 675,
   height: 600,
   bgcolor: "rgba(255, 255, 255, 1)",
   borderRadius: 3,
@@ -33,20 +34,74 @@ const BoxField = styled(Box)({
   mb: 2,
 })
 
-const properties = ["entertainment"]
+const properties = ["entertainment", "academic"]
 
-export default function BasicModal({ open, handleClose }) {
-  const [time, setTime] = useState()
+export default function BasicModal({ open, handleClose, username }) {
+  const [ activityname, setActivityname ] = useState('')
+  const [ hostname, setHostname ] = useState(username)
+  const [ timefrom, setTimefrom ] =useState()
+  const [ timeto, setTimeto ] = useState()
+  const [ tags, setTags ] = useState([])
+  const [ description, setDescription ] = useState('')
+  const { eventcreate } = useRent()
+
   const navigate = useNavigate()
 
-  const handleTimeChange = (newTime) => {
-    setTime(newTime)
+  const handleSubmit = async () => {
+    if (!activityname) {
+      window.alert('ActivityName cannot be empty!')
+      return
+    }
+    if (!timefrom) {
+      window.alert('Please choose the time that activity starts!')
+      return
+    }
+    if (!timeto) {
+      window.alert('Please choose the time that activity ends!')
+      return
+    }
+    if (!tags) {
+      window.alert('Please choose some properties for the activity!')
+      return
+    }
+    if (!description) {
+      window.alert('Please describe the activity!')
+      return
+    }
+
+    try {
+      console.log(timefrom.$d.getTime())
+      const { data } = await eventcreate({
+        variables: {
+          eventname: activityname,
+          hostname: hostname,
+          eventdatefrom: timefrom.$d.getTime().toString(),
+          eventdateto: timeto.$d.getTime().toString(),
+          tags: tags,
+          description: description,
+        },
+      })
+      
+      setActivityname("")
+      setTimefrom()
+      setTimeto()
+      setTags([])
+      setDescription("")
+
+      handleClose()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  const handleCreateEvent = () => {
-    handleClose()
-    navigate("/")
-  }
+  useEffect(()=>{
+    if(timefrom){
+      const time = timefrom.$d.getTime().toString()
+      
+      console.log(typeof(time))
+      
+    } 
+  },[timefrom])
 
   return (
     <div>
@@ -62,7 +117,7 @@ export default function BasicModal({ open, handleClose }) {
           >
             Create an Event
           </Typography>
-          <Box onSubmit={null} noValidate sx={{ mt: 1, width: 550 }}>
+          <Box onSubmit={null} noValidate sx={{ mt: 1, width: 625 }}>
             <BoxField
               sx={{
                 display: "flex",
@@ -74,7 +129,7 @@ export default function BasicModal({ open, handleClose }) {
               <Typography variant="subtitle1" sx={{ width: 200, mr: 1 }}>
                 Activity Name
               </Typography>
-              <TextField required fullWidth autoFocus variant="standard" />
+              <TextField required fullWidth autoFocus variant="standard" value={activityname} onChange={e => setActivityname(e.target.value)}/>
             </BoxField>
             <BoxField
               sx={{
@@ -90,14 +145,14 @@ export default function BasicModal({ open, handleClose }) {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                   label="from"
-                  value={time}
-                  onChange={handleTimeChange}
+                  value={timefrom}
+                  onChange={ (newTime) => setTimefrom(newTime) }
                   renderInput={(params) => <TextField {...params} />}
                 />
                 <DateTimePicker
                   label="to"
-                  value={time}
-                  onChange={handleTimeChange}
+                  value={timeto}
+                  onChange={ (newTime) => setTimeto(newTime) }
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -117,12 +172,14 @@ export default function BasicModal({ open, handleClose }) {
                 multiple
                 id="tags-standard"
                 options={properties}
-                getOptionLabel={(option) => option}
+                
+                onChange={(event, value) => setTags(value) }
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     variant="standard"
                     sx={{ width: 450, height: 31 }}
+                    value={tags}
                   />
                 )}
               />
@@ -138,6 +195,8 @@ export default function BasicModal({ open, handleClose }) {
                 multiline
                 rows={6}
                 placeholder="About Activity..."
+                value={description}
+                onChange={ e => setDescription(e.target.value) }
               />
             </BoxField>
             <Button
@@ -147,7 +206,7 @@ export default function BasicModal({ open, handleClose }) {
                 mt: 3,
                 mb: 2,
               }}
-              onClick={() => handleCreateEvent()}
+              onClick={handleSubmit}
             >
               Submit
             </Button>
