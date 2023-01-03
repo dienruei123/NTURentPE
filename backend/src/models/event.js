@@ -7,8 +7,14 @@ const EventSchema = new Schema({
   // Event Info
   eventname: { type: String, required: [true, "EventName field is required."] },
   hostname: { type: String, required: [true, "HostName field is required."] },
-  eventdatefrom: { type: String, required: [true, "EventDate field is required."] },
-  eventdateto: { type: String, required: [true, "EventDate field is required."] },
+  eventdatefrom: {
+    type: String,
+    required: [true, "EventDate field is required."],
+  },
+  eventdateto: {
+    type: String,
+    required: [true, "EventDate field is required."],
+  },
   tags: [{ type: String }],
   // subtitle: { type: String },
   description: { type: String },
@@ -25,6 +31,6 @@ const EventSchema = new Schema({
   trending: Boolean,
 })
 
-const EventModel = mongoose.model("event", EventSchema)
+const EventModel = mongoose.model("Event", EventSchema)
 
 export default EventModel
