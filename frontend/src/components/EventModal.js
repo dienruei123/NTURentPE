@@ -37,12 +37,13 @@ const BoxField = styled(Box)({
 const properties = ["entertainment", "academic"]
 
 export default function BasicModal({ open, handleClose, username }) {
-  const [activityname, setActivityname] = useState("")
-  const [hostname, setHostname] = useState(username)
-  const [timefrom, setTimefrom] = useState()
-  const [timeto, setTimeto] = useState()
-  const [tags, setTags] = useState([])
-  const [description, setDescription] = useState("")
+  const [ activityname, setActivityname ] = useState('')
+  const [ hostname, setHostname ] = useState(username)
+  const [ timefrom, setTimefrom ] =useState()
+  const [ timeto, setTimeto ] = useState()
+  const [ tags, setTags ] = useState([])
+  const [ description, setDescription ] = useState('')
+  const [ imageURL, setImageURL ] = useState('')
   const { eventcreate } = useRent()
 
   const navigate = useNavigate()
@@ -77,6 +78,7 @@ export default function BasicModal({ open, handleClose, username }) {
           hostname: hostname,
           eventdatefrom: timefrom.$d.getTime().toString(),
           eventdateto: timeto.$d.getTime().toString(),
+          imageURL: imageURL,
           tags: tags,
           description: description,
         },
@@ -87,6 +89,7 @@ export default function BasicModal({ open, handleClose, username }) {
       setTimeto()
       setTags([])
       setDescription("")
+      setImageURL("")
 
       handleClose()
     } catch (e) {
@@ -172,6 +175,19 @@ export default function BasicModal({ open, handleClose, username }) {
               }}
             >
               <Typography variant="subtitle1" sx={{ width: 200, mr: 1 }}>
+                imageURL
+              </Typography>
+              <TextField required fullWidth value={imageURL} onChange={e => setImageURL(e.target.value)}/>
+            </BoxField>
+            <BoxField
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                mt: 2,
+                mb: 2,
+              }}
+            >
+              <Typography variant="subtitle1" sx={{ width: 200, mr: 1 }}>
                 Tag
               </Typography>
               <Autocomplete
@@ -204,6 +220,7 @@ export default function BasicModal({ open, handleClose, username }) {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </BoxField>
+            
             <Button
               fullWidth
               variant="contained"
