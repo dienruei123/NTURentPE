@@ -33,7 +33,7 @@ const RentProvider = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [renderLoading, setRenderLoading] = useState(true)
 
-  const { data, loading, error } = useQuery(USERS_QUERY, {
+  const { data, loading, error, subscribeToMore } = useQuery(USERS_QUERY, {
     variables: {
       token: token,
     },
@@ -104,7 +104,8 @@ const RentProvider = (props) => {
         register,
         logout,
         eventcreate,
-        addtoEventlist
+        addtoEventlist,
+        subscribeToMore,
       }}
       {...props}
     />

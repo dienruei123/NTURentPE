@@ -8,10 +8,10 @@ import Chip from "@mui/material/Chip"
 import Stack from "@mui/material/Stack"
 
 export default function AlignItemsList({ info }) {
-  console.log(info[0].property)
+  
   return (
     <List sx={{ width: "100%", maxWidth: 400, bgcolor: "background.paper" }}>
-      {info ? (
+      {info.length ? (
         info.map((data) => (
           <ListItem
             key={data.name}
