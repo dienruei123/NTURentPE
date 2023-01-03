@@ -1,7 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Calendar from "../components/Calendar"
 import ProposalList from "../components/ProposalList"
+import { EVENT_CREATED_SUBSCRIPTION } from "../graphql"
+import { useRent } from './hooks/useRent';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -38,13 +40,42 @@ const Host = () => {
     { date: "12/31", name: "New Year", property: "success" },
     { date: "1/6", name: "Music Presentation", property: "progressing" },
   ])
+  const { data, subscribeToMore } = useRent()
+  let userInfo = []
+
+  useEffect(()=>{
+    subscribeToMore({
+      document: EVENT_CREATED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const event = subscriptionData.data.eventCreated;
+        return {
+          users: {
+            id: prev.users.id,
+            username: prev.users.username,
+            identity: prev.users.identity,
+            events: [event, ...prev.users.events],
+            isLoggedIn: prev.users.isLoggedIn,
+          },
+        };
+      },
+    });
+  },[subscribeToMore])
+
+  useEffect(()=>{
+    data.users.events.map(e=>{
+      const date = `Date From ${e.eventdatefrom}, Date to ${e.eventdateto}`
+      userInfo.push({name: e.eventname, date: date, property: "success"})      
+    })
+  },[data])
+  
 
   return (
     <Wrapper>
       <BodyWrapper>
         <Calendar />
         <EventWrapper>
-          <ProposalList info={info}></ProposalList>
+          <ProposalList info={userInfo}></ProposalList>
         </EventWrapper>
       </BodyWrapper>
     </Wrapper>

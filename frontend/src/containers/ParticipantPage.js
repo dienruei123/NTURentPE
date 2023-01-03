@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Calendar from "../components/Calendar"
 import EventList from "../components/EventList"
@@ -35,23 +35,29 @@ const EventWrapper = styled.div`
 `
 
 const Participant = () => {
-  const useRentContext = useRent()
-  const { username } = useRentContext
   const [info, setInfo] = useState([
     {
       date: "12/31",
       name: "New Year",
-      subtitle: "time flies",
       property: ["popular", "nice"],
     },
   ])
+  const { data } = useRent()
+  let userInfo = []
+
+  useEffect(()=>{
+    data.users.events.map(e=>{
+      const date = `Date From ${e.eventdatefrom}, Date to ${e.eventdateto}`
+      userInfo.push({name: e.eventname, date: date, property: e.tags})      
+    })
+  },[data])
 
   return (
     <Wrapper>
       <BodyWrapper>
         <Calendar />
         <EventWrapper>
-          <EventList info={info}></EventList>
+          <EventList info={userInfo}></EventList>
         </EventWrapper>
       </BodyWrapper>
     </Wrapper>
