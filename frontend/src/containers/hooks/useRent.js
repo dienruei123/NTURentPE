@@ -70,7 +70,6 @@ const RentProvider = (props) => {
 
   useEffect(() => {
     localStorage.setItem(LOCALSTORAGE_TOKEN, token)
-
     // console.log(loading)
     // console.log(data)
     setIsLoading(loading)
