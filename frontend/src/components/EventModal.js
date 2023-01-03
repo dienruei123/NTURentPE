@@ -37,7 +37,7 @@ const properties = ["entertainment"]
 
 export default function BasicModal({ open, handleClose }) {
   const [time, setTime] = useState()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleTimeChange = (newTime) => {
     setTime(newTime)
@@ -45,7 +45,7 @@ export default function BasicModal({ open, handleClose }) {
 
   const handleCreateEvent = () => {
     handleClose()
-    navigate("/")
+    // navigate("/")
   }
 
   return (
