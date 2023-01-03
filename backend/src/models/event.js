@@ -7,11 +7,8 @@ const EventSchema = new Schema({
   // Event Info
   eventname: { type: String, required: [true, "EventName field is required."] },
   hostname: { type: String, required: [true, "HostName field is required."] },
-  eventdatefrom: {
-    type: Date,
-    required: [true, "EventDate field is required."],
-  },
-  eventdateto: { type: Date, required: [true, "EventDate field is required."] },
+  eventdatefrom: { type: String, required: [true, "EventDate field is required."] },
+  eventdateto: { type: String, required: [true, "EventDate field is required."] },
   tags: [{ type: String }],
   // subtitle: { type: String },
   description: { type: String },

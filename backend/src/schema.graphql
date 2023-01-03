@@ -6,6 +6,7 @@ type Mutation {
   login(username: String!, passwd: String!): String!
   register(username: String!, passwd: String!, identity: String!): User!
   logout(username: String!): User!
+  event(eventname: String!, hostname: String!, eventdatefrom: String!, eventdateto: String!, tags: [String!], description: String!): Event!
 }
 
 type User {
@@ -15,16 +16,15 @@ type User {
   events: [Event]
   isLoggedIn: Boolean
 }
-
+ 
 type Event {
   eventname: String!
-  hostname: String
-  eventdate: String!
-  properties: [String]
-  subtitle: String
-  description: String
+  hostname: String!
+  eventdatefrom: String!
+  eventdateto: String!
+  tags: [String!]!
+  description: String!
   maxparticipants: Int
-
   participants: [String]
   rating: Float
   comments: [Comment]

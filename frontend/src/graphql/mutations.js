@@ -25,3 +25,20 @@ export const LOGOUT_MUTATION = gql`
     }
   }
 `
+
+export const EVENT_MUTATION = gql`
+  mutation event($eventname: String!, $hostname: String!, 
+    $eventdatefrom: String!, $eventdateto: String!, 
+    $tags: [String!], $description: String!) {
+      event( eventname: $eventname, hostname: $hostname, 
+        eventdatefrom: $eventdatefrom, eventdateto: $eventdateto,
+        tags: $tags, description: $description) {
+          eventname
+          hostname
+          eventdatefrom
+          eventdateto
+          tags
+          description
+        }
+    }
+`

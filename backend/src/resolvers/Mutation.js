@@ -67,5 +67,18 @@ const Mutation = {
     await user.save()
     return user
   },
+
+  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, description }, {EventModel}) => {
+    let event = await new EventModel({
+      eventname,
+      hostname,
+      eventdatefrom,
+      eventdateto,
+      tags,
+      description,
+    })
+    event.save()
+    return event
+  }
 }
 export default Mutation

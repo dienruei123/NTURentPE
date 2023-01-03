@@ -75,7 +75,7 @@ export default function HostBar() {
           </Toolbar>
         </AppBar>
       </Box>
-      <EventModal open={modalOpen} handleClose={handleClose} />
+      <EventModal open={modalOpen} handleClose={handleClose} username={username} />
     </>
   )
 }
