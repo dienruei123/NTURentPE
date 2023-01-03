@@ -8,7 +8,7 @@ import { useState, useEffect } from "react"
 const localizer = momentLocalizer(moment)
 
 const myEventsList = Events
-const EventsList = []
+let EventsList = []
 
 const MyCalendar = (props) => {
   const  { data } = useRent()
@@ -29,7 +29,7 @@ const MyCalendar = (props) => {
     <div>
     <Calendar
       localizer={localizer}
-      events={myEventsList}
+      events={EventsList}
       startAccessor="start"
       endAccessor="end"
       style={{ height: 500, minWidth: 650 }}

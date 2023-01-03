@@ -70,7 +70,7 @@ const Mutation = {
     return user
   },
 
-  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, imageURL, description }, {EventModel}) => {
+  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, imageURL, description }, {EventModel, pubSub}) => {
     let event = await new EventModel({
       eventname,
       hostname,
@@ -81,8 +81,12 @@ const Mutation = {
     })
     tags.map(e=> event.tags.push(e))
     event.save()
+    pubSub.publish("EVENT_CREATED", {
+      eventCreated: event,
+    });
     return event
   },
+
   addtoEventlist: async (parent, { username, eventname }, { EventModel }) => {
     let event = await EventModel.findOne({ eventname })
     event.participants.push(username)

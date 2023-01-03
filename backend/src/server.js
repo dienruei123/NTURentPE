@@ -9,6 +9,7 @@ import User from "./resolvers/User"
 import Event from "./resolvers/Event"
 import Query from "./resolvers/Query"
 import Mutation from "./resolvers/Mutation"
+import Subscription from "./resolvers/Subscription"
 
 const pubsub = createPubSub()
 
@@ -18,6 +19,7 @@ const yoga = createYoga({
     resolvers: {
       Query,
       Mutation,
+      Subscription,
       User,
       Event,
     },
