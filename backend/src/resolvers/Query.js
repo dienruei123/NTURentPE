@@ -21,6 +21,7 @@ const Query = {
     console.log(user, data)
     if (!user.isLoggedIn || user.loggedInAt.getTime() !== data.loggedInAt)
       throw new GraphQLError("TOKEN_EXPIRED_ERROR")
+    if (user.events.length) return user.populate(["events"])
     return user
   },
 }

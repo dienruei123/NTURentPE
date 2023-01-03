@@ -68,7 +68,11 @@ const Mutation = {
     return user
   },
 
-  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, description }, {EventModel}) => {
+  event: async (
+    parent,
+    { eventname, hostname, eventdatefrom, eventdateto, tags, description },
+    { EventModel }
+  ) => {
     let event = await new EventModel({
       eventname,
       hostname,
@@ -82,7 +86,7 @@ const Mutation = {
   },
   addtoEventlist: async (parent, { username, eventname }, { EventModel }) => {
     let event = await EventModel.findOne({ eventname })
-    event.participants.push(username);
+    event.participants.push(username)
     event.save()
     return username
   },
