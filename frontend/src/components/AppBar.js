@@ -1,5 +1,4 @@
 import * as React from "react"
-import { BrowserRouter } from 'react-router-dom';
 import DefaultBar from "./DefaultBar"
 import PersonalBar from "./PersonalBar"
 import HostBar from "./HostBar"
@@ -11,14 +10,14 @@ const ButtonAppBar = () => {
   const { signedIn } = useRentContext
 
   const renderBar = () => {
-    if (!signedIn) return <BrowserRouter><DefaultBar /></BrowserRouter>
+    if (!signedIn) return <DefaultBar />
     switch (identity) {
       case "Participant":
-        return <BrowserRouter><PersonalBar /></BrowserRouter>
+        return <PersonalBar />
       case "Host":
-        return <BrowserRouter><HostBar /></BrowserRouter>
+        return <HostBar />
       case "Admin":
-        return <BrowserRouter><PersonalBar /></BrowserRouter>
+        return <PersonalBar />
       default:
         throw new Error("INVALID_IDENTITY_ERROR")
     }

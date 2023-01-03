@@ -73,7 +73,7 @@ export default function SignIn() {
       setRenderLoading(true)
       navigate("/")
     } catch (e) {
-      // console.log(e)
+      console.log(e)
       setServerError(false)
       setErrUsernameinfo("")
       setErrPasswdinfo("")

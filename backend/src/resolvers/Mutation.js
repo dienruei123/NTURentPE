@@ -79,6 +79,12 @@ const Mutation = {
     })
     event.save()
     return event
-  }
+  },
+  addtoEventlist: async (parent, { username, eventname }, { EventModel }) => {
+    let event = await EventModel.findOne({ eventname })
+    event.participants.push(username);
+    event.save()
+    return username
+  },
 }
 export default Mutation

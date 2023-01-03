@@ -11,11 +11,14 @@ import Calendar from "./components/Calendar"
 import Participant from "./containers/ParticipantPage"
 import Host from "./containers/HostPage"
 import Loading from "./components/Loading"
+import Event from "./containers/EventPage"
 import { useRent } from "./containers/hooks/useRent"
+import AllEvent from "./containers/AllEventPage"
 
 const App = () => {
   const useRentContext = useRent()
   const { renderLoading } = useRentContext
+  const host = {name: "2023", description: "new year"}
   // console.log(renderLoading)
   return renderLoading ? (
     <Loading />
@@ -29,6 +32,8 @@ const App = () => {
         <Route exact path="/calendar" element={<Calendar />} />
         <Route exact path="/participant" element={<Participant />} />
         <Route exact path="/host" element={<Host />} />
+        <Route exact path="/event/:id" element={<Event Host = {host} />}/>
+        <Route exact path="/allevents" element={<AllEvent />}/>
       </Routes>
     </BrowserRouter>
   )
