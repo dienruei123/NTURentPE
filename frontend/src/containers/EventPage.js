@@ -75,7 +75,7 @@ const weekDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 const Event = () => {
   const { id } = useParams()
-  console.log(id)
+  // console.log(id)
   const useRentContext = useRent()
   const { username, addtoEventlist } = useRentContext
   const { identity } = useRentContext
@@ -95,7 +95,7 @@ const Event = () => {
 
   useEffect(() => {
     console.log(userEvents)
-    if (userEvents.some((event) => event.eventId === id)) setIsjoined(true)
+    if (userEvents.some((event) => event.id === id)) setIsjoined(true)
     else setIsjoined(false)
   }, [])
 
@@ -121,13 +121,14 @@ const Event = () => {
       const { data } = await addtoEventlist({
         variables: {
           username: username,
-          eventname: id,
+          eventId: id,
         },
       })
-      //   console.log(data)
+      console.log(data)
       if (data) {
-        if (data.addtoEventlist === "Cancelled") setIsjoined(false)
-        else if (data.addtoEventlist === "Added") setIsjoined(true)
+        // console.log(data.addtoEventlist)
+        if (data.addtoEventlist === "EVENT_CANCELED") setIsjoined(false)
+        else if (data.addtoEventlist === "EVENT_JOINED") setIsjoined(true)
         else throw new Error("ADDEVENTSTATUS_INVALID_ERROR")
       }
     } catch (error) {

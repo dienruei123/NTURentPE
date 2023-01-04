@@ -41,65 +41,72 @@ const AllEventsWrapper = styled.div`
   overflow: scroll;
 `
 
-const weekDay = [
-    'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
-]
+const weekDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 const AllEvent = () => {
-    const toDateString = (date) => {
-        const newDate = new Date(parseInt(date))
-        return weekDay[newDate.getDay()] + ' ' + newDate.toLocaleDateString("en-US", {
-            // year: "numeric",
-            month: "numeric",
-            day: "numeric",
-        })
-    }
-
-    function MultilineTextFields() {
-        return (
-            <Box
-                component="form"
-                sx={{
-                    "& .MuiTextField-root": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-            >
-                <div>
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Search"
-                        multiline
-                        maxRows={4}
-                    />
-                </div>
-            </Box>
-        )
-    }
-    // console.log(info)
-    const { data, loading, error } = useQuery(ALLEVENTS_QUERY, { pollInterval: 1, })
-    console.log(data, loading, error)
-
+  const toDateString = (date) => {
+    const newDate = new Date(parseInt(date))
     return (
-        <Wrapper>
-            <ButtonAppBar />
-            <BodyWrapper>
-                <MultilineTextFields />
-                <AllEventsWrapper>
-                    {!data ? <></> : data.allEvents.map((event) => (
-                        <ComplexGrid
-                            id={event.id}
-                            name={event.eventname}
-                            description={event.description}
-                            host={event.hostname}
-                            date={toDateString(event.eventdatefrom)}
-                            photo={event.imageURL}
-                        />
-                    ))}
-                </AllEventsWrapper>
-            </BodyWrapper>
-        </Wrapper>
+      weekDay[newDate.getDay()] +
+      " " +
+      newDate.toLocaleDateString("en-US", {
+        // year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      })
     )
+  }
+
+  function MultilineTextFields() {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div>
+          <TextField
+            id="outlined-multiline-static"
+            label="Search"
+            multiline
+            maxRows={4}
+          />
+        </div>
+      </Box>
+    )
+  }
+  // console.log(info)
+  const { data, loading, error } = useQuery(ALLEVENTS_QUERY, {
+    pollInterval: 1,
+  })
+  console.log(data, loading, error)
+
+  return (
+    <Wrapper>
+      <BodyWrapper>
+        <MultilineTextFields />
+        <AllEventsWrapper>
+          {!data ? (
+            <></>
+          ) : (
+            data.allEvents.map((event) => (
+              <ComplexGrid
+                id={event.id}
+                name={event.eventname}
+                description={event.description}
+                host={event.hostname}
+                date={toDateString(event.eventdatefrom)}
+                photo={event.imageURL}
+              />
+            ))
+          )}
+        </AllEventsWrapper>
+      </BodyWrapper>
+    </Wrapper>
+  )
 }
 
 export default AllEvent

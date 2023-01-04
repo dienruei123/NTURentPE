@@ -8,7 +8,7 @@ type Mutation {
   login(username: String!, passwd: String!): String!
   register(username: String!, passwd: String!, identity: String!): User!
   logout(username: String!): User!
-  addtoEventlist(username: String!, eventname: String!): String
+  addtoEventlist(username: String!, eventId: ID!): String!
   event(
     eventname: String!
     hostname: String!
@@ -17,7 +17,7 @@ type Mutation {
     imageURL: String
     tags: [String!]
     description: String!
-  ): Event!
+  ): String!
 }
 
 type Subscription {
