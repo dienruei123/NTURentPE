@@ -70,18 +70,23 @@ const Mutation = {
     return user
   },
 
-  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, imageURL, description }, {EventModel, pubSub}) => {
+  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, imageURL, description }, {UserModel,EventModel, pubsub}) => {
     let event = await new EventModel({
       eventname,
       hostname,
       eventdatefrom,
       eventdateto,
-      imageURL,
+      imageURL: imageURL || "0",
       description,
     })
+    console.log(event.imageURL)
     tags.map(e=> event.tags.push(e))
-    event.save()
-    pubSub.publish("EVENT_CREATED", {
+    await event.save()
+    let user = await UserModel.findOne({username: hostname})
+    user.events.push(event)
+    await user.save()
+    await user.populate(["events"])
+    pubsub.publish("EVENT_CREATED", {
       eventCreated: event,
     });
     return event

@@ -93,6 +93,7 @@ const RentProvider = (props) => {
         token,
         renderLoading,
         data,
+        loading,
         setUsername,
         setPasswd,
         setIdentity,

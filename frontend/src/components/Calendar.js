@@ -7,29 +7,28 @@ import { useState, useEffect } from "react"
 
 const localizer = momentLocalizer(moment)
 
-const myEventsList = Events
-let EventsList = []
-
 const MyCalendar = (props) => {
   const  { data } = useRent()
+  const [eventsList, setEventsList] = useState([])
 
   useEffect(()=>{
     const { users } = data
-    if (users.events) {
+    let newEventsList = []
+    if (users.events.length) {
       users.events.map((e)=>{
-        let timefrom = new Date(e.eventdatefom.valueOf) 
-        let timeto = new Date(e.eventdateto.valueOf)
-        EventsList.push({"title":e.eventname, "start":timefrom, "end":timeto})
+        let timefrom = new Date(parseInt(e.eventdatefrom)) 
+        let timeto = new Date(parseInt(e.eventdateto))
+        newEventsList.push({title: e.eventname, allDay: false, start: timefrom, end: timeto})
       })
+      setEventsList(newEventsList)
     }
-    console.log(users.identity)
   },[data])
 
   return(
     <div>
     <Calendar
       localizer={localizer}
-      events={EventsList}
+      events={eventsList}
       startAccessor="start"
       endAccessor="end"
       style={{ height: 500, minWidth: 650 }}

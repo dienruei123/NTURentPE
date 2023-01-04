@@ -12,6 +12,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
 import Autocomplete from "@mui/material/Autocomplete"
 import { useNavigate } from "react-router"
 import { useRent } from "../containers/hooks/useRent"
+import "dayjs"
 
 const style = {
   position: "absolute",
@@ -100,8 +101,10 @@ export default function BasicModal({ open, handleClose, username }) {
   useEffect(() => {
     if (timefrom) {
       const time = timefrom.$d.getTime().toString()
-
-      console.log(typeof time)
+      const timeInt = parseInt(time)
+      // dayjs(time).format("YYYY MMM DD")
+      console.log(new Date(timeInt))
+      
     }
   }, [timefrom])
 
