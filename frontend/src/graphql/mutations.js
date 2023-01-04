@@ -37,6 +37,7 @@ export const EVENT_MUTATION = gql`
           hostname
           eventdatefrom
           eventdateto
+          imageURL
           tags
           description
         }
