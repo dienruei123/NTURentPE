@@ -38,18 +38,19 @@ const BoxField = styled(Box)({
 const properties = ["entertainment", "academic"]
 
 export default function BasicModal({ open, handleClose, username }) {
-  const [ activityname, setActivityname ] = useState('')
-  const [ hostname, setHostname ] = useState(username)
-  const [ timefrom, setTimefrom ] =useState()
-  const [ timeto, setTimeto ] = useState()
-  const [ tags, setTags ] = useState([])
-  const [ description, setDescription ] = useState('')
-  const [ imageURL, setImageURL ] = useState('')
+  const [activityname, setActivityname] = useState("")
+  const [hostname, setHostname] = useState(username)
+  const [timefrom, setTimefrom] = useState()
+  const [timeto, setTimeto] = useState()
+  const [tags, setTags] = useState([])
+  const [description, setDescription] = useState("")
+  const [imageURL, setImageURL] = useState("")
   const { eventcreate } = useRent()
 
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
+    console.log(timefrom, timeto)
     if (!activityname) {
       window.alert("ActivityName cannot be empty!")
       return
@@ -62,10 +63,10 @@ export default function BasicModal({ open, handleClose, username }) {
       window.alert("Please choose the time that activity ends!")
       return
     }
-    if(timeto.$d.getTime()<timefrom.$d.getTime()){
-      window.alert('Start time should be earlier than End time')
+    if (timeto.$d.getTime() < timefrom.$d.getTime()) {
+      window.alert("Start time should be earlier than End time")
     }
-    if (!tags) {
+    if (!tags.length) {
       window.alert("Please choose some properties for the activity!")
       return
     }
@@ -101,15 +102,14 @@ export default function BasicModal({ open, handleClose, username }) {
     }
   }
 
-  useEffect(() => {
-    if (timefrom) {
-      const time = timefrom.$d.getTime().toString()
-      const timeInt = parseInt(time)
-      // dayjs(time).format("YYYY MMM DD")
-      console.log(new Date(timeInt))
-      
-    }
-  }, [timefrom])
+  // useEffect(() => {
+  //   if (timefrom) {
+  //     const time = timefrom.$d.getTime().toString()
+  //     const timeInt = parseInt(time)
+  //     // dayjs(time).format("YYYY MMM DD")
+  //     console.log(new Date(timeInt))
+  //   }
+  // }, [timefrom])
 
   return (
     <div>
@@ -161,7 +161,9 @@ export default function BasicModal({ open, handleClose, username }) {
                 <DateTimePicker
                   label="from"
                   value={timefrom}
-                  onChange={(newTime) => setTimefrom(newTime)}
+                  onChange={(newTime) => {
+                    setTimefrom(newTime)
+                  }}
                   renderInput={(params) => <TextField {...params} />}
                 />
                 <DateTimePicker
@@ -183,7 +185,12 @@ export default function BasicModal({ open, handleClose, username }) {
               <Typography variant="subtitle1" sx={{ width: 200, mr: 1 }}>
                 imageURL
               </Typography>
-              <TextField required fullWidth value={imageURL} onChange={e => setImageURL(e.target.value)}/>
+              <TextField
+                required
+                fullWidth
+                value={imageURL}
+                onChange={(e) => setImageURL(e.target.value)}
+              />
             </BoxField>
             <BoxField
               sx={{
@@ -226,7 +233,7 @@ export default function BasicModal({ open, handleClose, username }) {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </BoxField>
-            
+
             <Button
               fullWidth
               variant="contained"
