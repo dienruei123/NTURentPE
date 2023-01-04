@@ -14,13 +14,14 @@ import Loading from "./components/Loading"
 import Event from "./containers/EventPage"
 import { useRent } from "./containers/hooks/useRent"
 import AllEvent from "./containers/AllEventPage"
+import AllEventQuery from "./containers/AllEventQuery"
 
 const App = () => {
   const useRentContext = useRent()
   const { username } = useRentContext
   const { signedIn } = useRentContext
   const { renderLoading } = useRentContext
-  const host = {name: "2023", description: "new year"}
+  const host = { name: "2023", description: "new year" }
   // console.log(renderLoading)
   useEffect(() => {
     // document.title = signedIn ? `${username}'s Home` : "Home"
@@ -39,8 +40,9 @@ const App = () => {
         <Route exact path="/calendar" element={<Calendar />} />
         <Route exact path="/participant" element={<Participant />} />
         <Route exact path="/host" element={<Host />} />
-        <Route exact path="/event/:id" element={<Event Host = {host} />}/>
-        <Route exact path="/allevents" element={<AllEvent />}/>
+        <Route exact path="/event/:id" element={<Event Host={host} />} />
+        <Route exact path="/allevents" element={<AllEvent />} />
+        <Route exact path="/allEventQuery" element={<AllEventQuery />} />
       </Routes>
     </BrowserRouter>
   )

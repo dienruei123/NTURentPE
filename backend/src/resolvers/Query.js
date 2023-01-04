@@ -18,11 +18,15 @@ const Query = {
     const user = await UserModel.findOne({ username: data.username })
     if (!user) throw new GraphQLError(`User '${data.username}' not found!!`)
 
-    console.log(user, data)
+    // console.log(user, data)
     if (!user.isLoggedIn || user.loggedInAt.getTime() !== data.loggedInAt)
       throw new GraphQLError("TOKEN_EXPIRED_ERROR")
     if (user.events.length) return user.populate(["events"])
     return user
+  },
+  allEvents: async (parent, args, { EventModel }) => {
+    let events = await EventModel.find({})
+    return events
   },
 }
 

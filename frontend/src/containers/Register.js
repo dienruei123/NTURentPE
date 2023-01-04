@@ -109,10 +109,12 @@ const Register = () => {
           identity: identity,
         },
       })
-      // console.log(data, passwd, identity)
+      console.log(data, passwd, identity)
       setPasswd("")
       setConfirmPasswd("")
       setIdentity(identityOptions[0].label)
+      setServerError(false)
+      setServerErrorText("")
 
       openModal()
 

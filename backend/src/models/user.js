@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   username: { type: String, required: [true, "Name field is required."] },
   passwd: { type: String, required: [true, "Password field is required."] },
   identity: { type: String, required: [true, "Identity field is required."] },
-  events: [{ type: Schema.Types.ObjectId, ref: "Events" }],
+  events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   // events: [{ type: String }],
   isLoggedIn: Boolean,
   loggedInAt: Date,
