@@ -70,7 +70,19 @@ const Mutation = {
     return user
   },
 
-  event: async (parent, { eventname, hostname, eventdatefrom, eventdateto, tags, imageURL, description }, {UserModel,EventModel, pubsub}) => {
+  event: async (
+    parent,
+    {
+      eventname,
+      hostname,
+      eventdatefrom,
+      eventdateto,
+      tags,
+      imageURL,
+      description,
+    },
+    { UserModel, EventModel, pubsub }
+  ) => {
     let event = await new EventModel({
       eventname,
       hostname,
@@ -80,23 +92,46 @@ const Mutation = {
       description,
     })
     console.log(event.imageURL)
-    tags.map(e=> event.tags.push(e))
+    tags.map((e) => event.tags.push(e))
     await event.save()
-    let user = await UserModel.findOne({username: hostname})
+    let user = await UserModel.findOne({ username: hostname })
     user.events.push(event)
     await user.save()
     await user.populate(["events"])
     pubsub.publish("EVENT_CREATED", {
       eventCreated: event,
-    });
+    })
     return event
   },
-
-  addtoEventlist: async (parent, { username, eventname }, { EventModel }) => {
+  addtoEventlist: async (
+    parent,
+    { username, eventname },
+    { UserModel, EventModel }
+  ) => {
+    let status = ""
     let event = await EventModel.findOne({ eventname })
-    event.participants.push(username)
-    event.save()
-    return username
+    let user = await UserModel.findOne({ username })
+    if (
+      event.participants &&
+      event.participants.some((user) => user === username)
+    ) {
+      event.participants.splice(
+        event.participants.findIndex((user) => user === username),
+        1
+      )
+      user.events.splice(
+        user.events.findIndex((event) => event.eventname === eventname),
+        1
+      )
+      status = "Cancelled"
+    } else {
+      event.participants.push(username)
+      user.events.push(event)
+      status = "Added"
+    }
+    await event.save()
+    await user.save()
+    return status
   },
 }
 export default Mutation
