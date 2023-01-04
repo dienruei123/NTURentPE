@@ -260,7 +260,6 @@ export default function BasicModal({ open, handleClose, username }) {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </BoxField>
-
             <Button
               fullWidth
               variant="contained"
