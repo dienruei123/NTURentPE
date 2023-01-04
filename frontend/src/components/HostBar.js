@@ -26,7 +26,7 @@ export default function HostBar() {
   }
   return (
     <>
-      <Box sx={{ flexGrow: 1, position: "fixed" }}>
+      <Box sx={{ flexGrow: 1, position: "fixed", zIndex: 10 }}>
         <AppBar
           position="fixed"
           sx={{
@@ -75,7 +75,11 @@ export default function HostBar() {
           </Toolbar>
         </AppBar>
       </Box>
-      <EventModal open={modalOpen} handleClose={handleClose} username={username} />
+      <EventModal
+        open={modalOpen}
+        handleClose={handleClose}
+        username={username}
+      />
     </>
   )
 }
