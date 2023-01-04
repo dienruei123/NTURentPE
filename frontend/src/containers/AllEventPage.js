@@ -88,6 +88,7 @@ const AllEvent = () => {
                 <AllEventsWrapper>
                     {!data ? <></> : data.allEvents.map((event) => (
                         <ComplexGrid
+                            id={event.id}
                             name={event.eventname}
                             description={event.description}
                             host={event.hostname}

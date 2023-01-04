@@ -3,6 +3,7 @@ import styled from "styled-components"
 import Calendar from "../components/Calendar"
 import EventList from "../components/EventList"
 import { useRent } from "./hooks/useRent"
+import { EVENT_JOINED_SUBSCRIPTION, EVENT_CANCELED_SUBSCRIPTION } from "../graphql"
 
 const Wrapper = styled.div`
   height: 100%;
@@ -55,8 +56,48 @@ const Participant = () => {
       property: ["popular", "nice"],
     },
   ])
-  const { data } = useRent()
+  const { data, subscribeToMore } = useRent()
   const [userInfo, setUserInfo] = useState([])
+  
+  useEffect(()=>{
+    subscribeToMore({
+      document: EVENT_JOINED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const event = subscriptionData.data.eventJoined;
+        console.log(event)
+        return {
+          users: {
+            id: prev.users.id,
+            username: prev.users.username,
+            identity: prev.users.identity,
+            events: [event, ...prev.users.events],
+            isLoggedIn: prev.users.isLoggedIn,
+          },
+        };
+      },
+    });
+  },[subscribeToMore])
+
+  useEffect(()=>{
+    subscribeToMore({
+      document: EVENT_CANCELED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const event = subscriptionData.data.eventCanceled;
+        console.log(event)
+        return {
+          users: {
+            id: prev.users.id,
+            username: prev.users.username,
+            identity: prev.users.identity,
+            events: prev.users.events.splice(prev.users.events.findIndex((e) => e.eventname === event.eventname),1),
+            isLoggedIn: prev.users.isLoggedIn,
+          },
+        };
+      },
+    });
+  },[subscribeToMore])
 
   useEffect(()=>{
     if (data.users.events.length) {
@@ -67,6 +108,7 @@ const Participant = () => {
         const date = `Date From ${timefrom}, Date to ${timeto}`
         newUserInfo.push({name: e.eventname, date: date, property: e.tags})      
       })
+      setUserInfo(newUserInfo)
     }
   },[data])
 

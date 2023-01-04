@@ -133,7 +133,7 @@ const Mutation = {
   addtoEventlist: async (
     parent,
     { username, eventname },
-    { UserModel, EventModel }
+    { UserModel, EventModel, pubsub }
   ) => {
     let status = ""
     let event = await EventModel.findOne({ eventname })
@@ -150,10 +150,16 @@ const Mutation = {
         user.events.findIndex((event) => event.eventname === eventname),
         1
       )
+      pubsub.publish("EVENT_CANCELED", {
+        eventCanceled: event,
+      })
       status = "Cancelled"
     } else {
       event.participants.push(username)
       user.events.push(event)
+      pubsub.publish("EVENT_JOINED", {
+        eventJoined: event,
+      })
       status = "Added"
     }
     await event.save()

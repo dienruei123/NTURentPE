@@ -22,6 +22,8 @@ type Mutation {
 
 type Subscription {
   eventCreated: Event!
+  eventJoined: Event!
+  eventCanceled: Event!
 }
 
 type User {

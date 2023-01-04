@@ -15,11 +15,11 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
-export default function ComplexGrid({ name, description, host, date, photo, isJoined }) {
+export default function ComplexGrid({ id, name, description, host, date, photo, isJoined }) {
     const navigate = useNavigate()
 
     const ToEvent = () => {
-        navigate("/event/" + name)
+        navigate("/event/" + id)
     }
 
     const handleText = (description) => {
