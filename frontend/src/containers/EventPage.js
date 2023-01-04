@@ -82,10 +82,10 @@ const Event = () => {
   const { userEvents } = useRentContext
   const { data, error } = useQuery(EVENT_QUERY, {
     variables: {
-      eventname: id,
+      id: id,
     },
   })
-  //   console.log(data)
+  // console.log(data.event, error)
   // const { event } = data
   //   console.log(event)
   const [open, setOpen] = useState(true)
@@ -95,7 +95,7 @@ const Event = () => {
 
   useEffect(() => {
     console.log(userEvents)
-    if (userEvents.some((event) => event.eventname === id)) setIsjoined(true)
+    if (userEvents.some((event) => event.eventId === id)) setIsjoined(true)
     else setIsjoined(false)
   }, [])
 

@@ -28,8 +28,9 @@ const Query = {
     let events = await EventModel.find({})
     return events
   },
-  event: async (parent, { eventname }, { EventModel }) => {
-    let event = await EventModel.findOne({ eventname })
+  event: async (parent, { id }, { EventModel }) => {
+    // console.log(id)
+    let event = await EventModel.findOne({ id })
     return event
   },
 }

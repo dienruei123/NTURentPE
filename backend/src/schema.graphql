@@ -1,15 +1,23 @@
 type Query {
   users(token: String!): User!
   allEvents: [Event!]!
-  event(eventname: String!): Event!
+  event(id: ID!): Event!
 }
 
 type Mutation {
   login(username: String!, passwd: String!): String!
   register(username: String!, passwd: String!, identity: String!): User!
-  logout(username: String!): User!,
-  addtoEventlist(username: String!, eventname: String!): String,
-  event(eventname: String!, hostname: String!, eventdatefrom: String!, eventdateto: String!, imageURL: String, tags: [String!], description: String!): Event!
+  logout(username: String!): User!
+  addtoEventlist(username: String!, eventname: String!): String
+  event(
+    eventname: String!
+    hostname: String!
+    eventdatefrom: String!
+    eventdateto: String!
+    imageURL: String
+    tags: [String!]
+    description: String!
+  ): Event!
 }
 
 type Subscription {
@@ -23,8 +31,9 @@ type User {
   events: [Event]
   isLoggedIn: Boolean
 }
- 
+
 type Event {
+  id: ID
   eventname: String
   hostname: String
   eventdatefrom: String

@@ -5,6 +5,7 @@ import { WebSocketServer } from "ws"
 import * as fs from "fs"
 import UserModel from "./models/user"
 import EventModel from "./models/event"
+import CounterModel from "./models/counter"
 import User from "./resolvers/User"
 import Event from "./resolvers/Event"
 import Query from "./resolvers/Query"
@@ -27,6 +28,7 @@ const yoga = createYoga({
   context: {
     UserModel,
     EventModel,
+    CounterModel,
     pubsub,
   },
   // graphqlEndpoint: "/", // uncomment this to send the app to: 4000/
