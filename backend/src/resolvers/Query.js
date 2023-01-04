@@ -15,7 +15,7 @@ const Query = {
     const data = jwt.verify(token, jwtSecretKey)
     if (!data) throw new GraphQLError("QUERY_JWTSECRETKEY_ERROR")
 
-    const user = await UserModel.findOne({ username: data.username })
+    const user = await UserModel.findOne({ id: data.id })
     if (!user) throw new GraphQLError(`User '${data.username}' not found!!`)
 
     // console.log(user, data)

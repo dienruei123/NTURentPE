@@ -12,6 +12,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
 import Autocomplete from "@mui/material/Autocomplete"
 import { useNavigate } from "react-router"
 import { useRent } from "../containers/hooks/useRent"
+import defaultIMG from "../eventPictures/2023_NEW-YORK.jpg"
 import "dayjs"
 
 const style = {
@@ -75,7 +76,7 @@ export default function BasicModal({ open, handleClose, username }) {
   }, [open])
 
   const handleSubmit = async () => {
-    console.log(timefrom, timeto)
+    // console.log(timefrom, timeto)
     if (!activityname) {
       window.alert("ActivityName cannot be empty!")
       return
@@ -90,6 +91,7 @@ export default function BasicModal({ open, handleClose, username }) {
     }
     if (timeto.$d.getTime() < timefrom.$d.getTime()) {
       window.alert("Start time should be earlier than End time")
+      return
     }
     if (!tags.length) {
       window.alert("Please choose some properties for the activity!")
@@ -101,19 +103,18 @@ export default function BasicModal({ open, handleClose, username }) {
     }
 
     try {
-      console.log(timefrom.$d.getTime())
+      // console.log(timefrom.$d.getTime())
       const { data } = await eventcreate({
         variables: {
           eventname: activityname,
           hostname: hostname,
           eventdatefrom: timefrom.$d.getTime().toString(),
           eventdateto: timeto.$d.getTime().toString(),
-          imageURL: imageURL,
+          imageURL: imageURL || defaultIMG,
           tags: tags,
           description: description,
         },
       })
-
       setActivityname("")
       setTags([])
       setDescription("")

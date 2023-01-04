@@ -6,6 +6,8 @@ import {
   EVENT_MUTATION,
   ADDTOEVENTLIST_MUTATION,
   EVENT_CREATED_SUBSCRIPTION,
+  EVENT_JOINED_SUBSCRIPTION,
+  EVENT_CANCELED_SUBSCRIPTION,
 } from "../../graphql"
 import { createContext, useContext, useEffect, useState } from "react"
 import { USERS_QUERY } from "../../graphql/queries"
@@ -79,10 +81,9 @@ const RentProvider = (props) => {
       setSignedIn(true)
       setUsername(users.username)
       setIdentity(users.identity)
-      if (users.events) {
-        // console.log(users.events)
-        setUserEvents(users.events)
-      }
+      // console.log(users.events)
+      setUserEvents(users.events)
+      console.log(12345)
     } else {
       // console.log(error)
       setSignedIn(false)
@@ -90,23 +91,74 @@ const RentProvider = (props) => {
   })
 
   useEffect(() => {
-    subscribeToMore({
-      document: EVENT_CREATED_SUBSCRIPTION,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev
-        const event = subscriptionData.data.eventCreated
+    try {
+      subscribeToMore({
+        document: EVENT_JOINED_SUBSCRIPTION,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev
+          const event = subscriptionData.data.eventJoined
+          console.log(event)
+          return {
+            users: {
+              id: prev.users.id,
+              username: prev.users.username,
+              identity: prev.users.identity,
+              events: [...prev.users.events, event],
+              isLoggedIn: prev.users.isLoggedIn,
+            },
+          }
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [subscribeToMore])
 
-        return {
-          users: {
-            id: prev.users.id,
-            username: prev.users.username,
-            identity: prev.users.identity,
-            events: [event, ...prev.users.events],
-            isLoggedIn: prev.users.isLoggedIn,
-          },
-        }
-      },
-    })
+  useEffect(() => {
+    try {
+      subscribeToMore({
+        document: EVENT_CANCELED_SUBSCRIPTION,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev
+          const event = subscriptionData.data.eventCanceled
+          console.log(prev)
+          return {
+            users: {
+              id: prev.users.id,
+              username: prev.users.username,
+              identity: prev.users.identity,
+              events: prev.users.events.filter((e) => e.id !== event.id),
+              isLoggedIn: prev.users.isLoggedIn,
+            },
+          }
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  })
+
+  useEffect(() => {
+    try {
+      subscribeToMore({
+        document: EVENT_CREATED_SUBSCRIPTION,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev
+          const event = subscriptionData.data.eventCreated
+          return {
+            users: {
+              id: prev.users.id,
+              username: prev.users.username,
+              identity: prev.users.identity,
+              events: [...prev.users.events, event],
+              isLoggedIn: prev.users.isLoggedIn,
+            },
+          }
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }, [subscribeToMore])
 
   return (

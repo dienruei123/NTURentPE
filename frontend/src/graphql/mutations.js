@@ -55,20 +55,11 @@ export const EVENT_MUTATION = gql`
       imageURL: $imageURL
       tags: $tags
       description: $description
-    ) {
-      id
-      eventname
-      hostname
-      eventdatefrom
-      eventdateto
-      imageURL
-      tags
-      description
-    }
+    )
   }
 `
 export const ADDTOEVENTLIST_MUTATION = gql`
-  mutation addtoEventlist($username: String!, $eventname: String!) {
-    addtoEventlist(username: $username, eventname: $eventname)
+  mutation addtoEventlist($username: String!, $eventId: ID!) {
+    addtoEventlist(username: $username, eventId: $eventId)
   }
 `

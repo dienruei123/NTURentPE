@@ -111,7 +111,7 @@ const Mutation = {
       hostname,
       eventdatefrom,
       eventdateto,
-      imageURL: imageURL || "0",
+      imageURL: imageURL,
       description,
     })
     // console.log(event.imageURL)
@@ -128,16 +128,17 @@ const Mutation = {
     pubsub.publish("EVENT_CREATED", {
       eventCreated: event,
     })
-    return event
+    return "EVENT_CREATED"
   },
   addtoEventlist: async (
     parent,
-    { username, eventname },
+    { username, eventId },
     { UserModel, EventModel, pubsub }
   ) => {
     let status = ""
-    let event = await EventModel.findOne({ eventname })
+    let event = await EventModel.findOne({ id: eventId })
     let user = await UserModel.findOne({ username })
+    // console.log(event)
     if (
       event.participants &&
       event.participants.some((user) => user === username)
@@ -147,23 +148,24 @@ const Mutation = {
         1
       )
       user.events.splice(
-        user.events.findIndex((event) => event.eventname === eventname),
+        user.events.findIndex((event) => event.id === eventId),
         1
       )
       pubsub.publish("EVENT_CANCELED", {
         eventCanceled: event,
       })
-      status = "Cancelled"
+      status = "EVENT_CANCELED"
     } else {
       event.participants.push(username)
       user.events.push(event)
       pubsub.publish("EVENT_JOINED", {
         eventJoined: event,
       })
-      status = "Added"
+      status = "EVENT_JOINED"
     }
     await event.save()
     await user.save()
+    console.log(user.event)
     return status
   },
 }

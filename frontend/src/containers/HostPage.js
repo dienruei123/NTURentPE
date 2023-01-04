@@ -44,11 +44,12 @@ const EventWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   overflow: auto;
-  z-index: -1;
 `
 
+const weekDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
 const Host = () => {
-  const { userEvents } = useRent()
+  const { userEvents, data, subscribeToMore } = useRent()
   const [userInfo, setUserInfo] = useState([])
 
   useEffect(() => {
@@ -56,13 +57,31 @@ const Host = () => {
     let newUserInfo = []
     console.log(userEvents)
     userEvents.map((e) => {
-      let datefrom = new Date(parseInt(e.eventdatefrom))
-      let dateto = new Date(parseInt(e.eventdateto))
-      const date = `Date From ${datefrom}, Date to ${dateto}`
-      newUserInfo.push({ name: e.eventname, date: date, property: "success" })
+      let datefrom = toDateString(e.eventdatefrom)
+      let dateto = toDateString(e.eventdateto)
+      const date = `${datefrom} ~ ${dateto}`
+      newUserInfo.push({
+        id: e.id,
+        name: e.eventname,
+        date: date,
+        property: "success",
+      })
     })
     setUserInfo(newUserInfo)
   }, [userEvents])
+
+  const toDateString = (date) => {
+    const newDate = new Date(parseInt(date))
+    return (
+      weekDay[newDate.getDay()] +
+      " " +
+      newDate.toLocaleDateString("en-US", {
+        year: "2-digit",
+        month: "numeric",
+        day: "numeric",
+      })
+    )
+  }
 
   return (
     <Wrapper>

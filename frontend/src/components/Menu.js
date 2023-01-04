@@ -42,6 +42,7 @@ export default function LongMenu() {
     switch (key) {
       case "More Events": {
         navigate("/allevents")
+        handleClose()
         break
       }
       case "Logout": {
