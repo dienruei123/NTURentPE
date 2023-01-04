@@ -3,12 +3,10 @@ import './css/eventPage.css'
 import ReactStars from "react-rating-stars-component";
 import { useState, useEffect } from "react";
 import Stars from '../components/stars';
-// import axios from 'axios'
-
-// const instance = axios.create({
-//     baseURL: 'http://localhost:4000/api'
-// })
-
+import { Paper } from '@mui/material';
+import { Grid } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import imgLink from '../eventPictures/2023_NEW-YORK.jpg'
 const Comment = ({ eventId, comments, setComments, setLoad }) => {
     const [rating, setRating] = useState(0)
     const [name, setName] = useState('')
@@ -21,7 +19,6 @@ const Comment = ({ eventId, comments, setComments, setLoad }) => {
 
     const storeComment = async () => {
         // await instance.post('/createComment', {
-        //     // TODO Part III-3-b: store the comment to the DB
         //     eventId: eventId,
         //     name: name,
         //     rating: rating,
@@ -30,7 +27,6 @@ const Comment = ({ eventId, comments, setComments, setLoad }) => {
     }
 
     const submitComment = () => {
-        // TODO Part III-3-b: submit a comment and reset input fields
         if (name && content && rating) {
             setComments([...comments, {
                 eventId: eventId,
@@ -68,19 +64,31 @@ const Comment = ({ eventId, comments, setComments, setLoad }) => {
             <div className='comments'>
                 {
                     comments.map((comment) => (
-                        <div className='comment' key={comment.name}>
-                            <div className='title'>
-                                <div className='info'>
-                                    <p className='name'> {comment.name} </p>
-                                    <Stars rating={comment.rating} displayScore={false} />
-                                </div>
-                            </div>
-                            <p className='content'> {comment.content}</p>
-                        </div>
+                        <Paper style={{ padding: "30px 15px" }}>
+                            <Grid container wrap="nowrap" spacing={2}>
+                                <Grid item>
+                                    <Avatar alt={comment.name} src={imgLink} />
+                                </Grid>
+                                <Grid justifyContent="left" item xs zeroMinWidth>
+                                    <div style={{ display: "flex", flexWrap: "nowrap" }}>
+                                        <h4 style={{ margin: 0, textAlign: "left" }}>{comment.name}</h4>
+                                        <Stars rating={comment.rating} displayScore={false} />
+                                    </div>
+                                    <p style={{ textAlign: "left" }}>
+                                        {comment.content}{" "}
+                                    </p>
+                                    <p style={{ textAlign: "left", color: "gray" }}>
+                                        posted just now
+                                    </p>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+
                     ))
                 }
 
             </div>
+
         </div>
     )
 }

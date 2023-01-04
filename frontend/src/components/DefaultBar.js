@@ -10,7 +10,7 @@ import { useNavigate } from "react-router"
 export default function DefaultBar() {
   const navigate = useNavigate()
   return (
-    <Box sx={{ flexGrow: 1, position: "fixed" }}>
+    <Box sx={{ flexGrow: 1, position: "fixed", zIndex: 10 }}>
       <AppBar
         position="fixed"
         sx={{

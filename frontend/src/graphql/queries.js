@@ -23,3 +23,18 @@ export const ALLEVENTS_QUERY = gql`
     }
   }
 `
+
+export const EVENT_QUERY = gql`
+  query event($eventname: String!) {
+    event(eventname: $eventname) {
+      eventname
+      hostname
+      eventdatefrom
+      eventdateto
+      tags
+      description
+      imageURL
+      maxparticipants
+    }
+  }
+`

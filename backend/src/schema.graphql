@@ -1,6 +1,7 @@
 type Query {
   users(token: String!): User!
   allEvents: [Event!]!
+  event(eventname: String!): Event!
 }
 
 type Mutation {

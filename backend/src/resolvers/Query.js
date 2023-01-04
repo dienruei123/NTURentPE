@@ -28,6 +28,10 @@ const Query = {
     let events = await EventModel.find({})
     return events
   },
+  event: async (parent, { eventname }, { EventModel }) => {
+    let event = await EventModel.findOne({ eventname })
+    return event
+  },
 }
 
 export default Query

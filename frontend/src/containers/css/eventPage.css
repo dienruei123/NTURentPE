@@ -11,19 +11,18 @@
     color: rgb(12, 55, 93);
 }
 
-/* .eventPageContainer .infoContainer {
+.eventPageContainer .infoContainer {
     margin-right: 1em;
     padding: 2em;
     width: 30%;
     border-width: 1px;
     text-align: left;
-} */
+}
 
 .eventPageContainer .commentContainer {
     margin-left: 1em;
     padding: auto;
     width: 80%;
-
 }
 
 .infoRow {
