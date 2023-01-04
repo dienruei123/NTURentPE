@@ -58,7 +58,9 @@ const Mutation = {
       isLoggedIn: false,
       loggedInAt: new Date().getTime(),
     }).save()
-    return user
+    console.log(user)
+    // return user
+    return user.populate("events")
   },
   logout: async (parent, { username }, { UserModel }) => {
     let user = await UserModel.findOne({ username })
@@ -79,9 +81,10 @@ const Mutation = {
       eventdatefrom,
       eventdateto,
       tags,
+      participants: [],
       description,
     })
-    event.save()
+    await event.save()
     return event
   },
   addtoEventlist: async (parent, { username, eventname }, { EventModel }) => {

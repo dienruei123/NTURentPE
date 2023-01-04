@@ -1,5 +1,6 @@
 type Query {
   users(token: String!): User!
+  allEvents: [Event!]!
 }
 
 type Mutation {
@@ -32,7 +33,9 @@ type Event {
   eventdateto: String
   tags: [String]
   description: String
+  imageURL: String
   maxparticipants: Int
+
   participants: [String]
   rating: Float
   comments: [Comment]

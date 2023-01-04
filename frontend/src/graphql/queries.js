@@ -8,3 +8,18 @@ export const USERS_QUERY = gql`
     }
   }
 `
+
+export const ALLEVENTS_QUERY = gql`
+  query allEvents {
+    allEvents {
+      eventname
+      hostname
+      eventdatefrom
+      eventdateto
+      tags
+      description
+      imageURL
+      maxparticipants
+    }
+  }
+`

@@ -18,6 +18,7 @@ const EventSchema = new Schema({
   tags: [{ type: String }],
   // subtitle: { type: String },
   description: { type: String },
+  imageURL: { type: String },
   maxparticipants: Number,
 
   // Event subs
