@@ -1,13 +1,10 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import ButtonAppBar from "../components/AppBar.js"
-import EventList from "../components/EventList"
-import BasicModal from "../components/EventModal"
 import Comment from "./comment"
 import newyearpic from '../eventPictures/2023_NEW-YORK.jpg'
 import { useRent } from "./hooks/useRent"
 import { useParams } from 'react-router-dom'
-import Paper from "@mui/material/Paper";
 import Stars from '../components/stars';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -15,6 +12,11 @@ import './css/eventPage.css'
 import { IconButton } from "@mui/material"
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import PlaceIcon from '@mui/icons-material/Place';
+import StyleIcon from '@mui/icons-material/Style';
+import Chip from "@mui/material/Chip"
+import Stack from "@mui/material/Stack"
 
 const Wrapper = styled.div`
   height: 100%;
@@ -33,23 +35,33 @@ const BodyWrapper = styled.div`
   align-items: space-around;
   justify-content: space-around;
   overflow: auto;
+  z-index: -1;
 `
 
 const EventWrapper = styled.div`
   height: 100%;
-  width: 30%;
-
+  width: 70%;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   overflow: auto;
 `
-const HostWrapper = styled.div`
+const CommentWrapper = styled.div`
+  height: 100%;
+  width: 30%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
+`
+const HostWrapper = styled.div`
+  margin: 50px auto;
+  display: flex;
+  min-width: 320px;
+  max-width: fit-content;
+  font-family: Roboto;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
 `
 const IconWrapper = styled.div`
   display: flex;
@@ -102,8 +114,65 @@ const Event = (Host) => {
         <Wrapper>
             <ButtonAppBar />
             <BodyWrapper>
-                {/* <BasicModal open={open} handleClose={handleClose}/> */}
                 <EventWrapper>
+                    <div className="mainpictureContainer">
+                        <div className="mainpicture">
+                            <img className='photo' src={newyearpic} alt="new year" />
+                        </div>
+                        <div className="infoContainer">
+                            <div className="list">
+                                <DateRangeIcon style={{ padding: "0.5em" }} />
+                                <p className="info">Sunday, Mar 19th 2023</p>
+                            </div>
+                            <div className="list">
+                                <PlaceIcon style={{ padding: "0.5em" }} />
+                                <p className="info">New York City </p>
+                            </div>
+                            <div className="list">
+                                <StyleIcon style={{ padding: "0.5em" }} />
+                                <p className="info">
+                                    <Stack direction="row" spacing={1}>
+                                        <Chip label="primary" color="primary" />
+                                        <Chip label="success" color="success" />
+                                    </Stack>
+                                </p>
+                            </div>
+                            <div className="list">
+                                <IconButton onClick={AddToEventlist} style={{ width: "48px", height: "48px"}}>
+                                    {(isjoined) ? <BookmarkAddedIcon style={{ padding: "0.5em" }} /> : <BookmarkAddIcon style={{ padding: "0.5em" }} />}
+                                </IconButton>
+                                <p className="info">Add to My Event</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 className="description">Description</h2>
+                    <hr className="line"></hr>
+                    <div className="paragraph">
+                        <p>
+                            jhsbdcvsyhfvytfvfvjhgb
+                        </p>
+                    </div>
+                    <HostWrapper>
+                        <div style={{ padding: "0px 25px 0px 0px" }}>
+                            <div className="hostIcon">N</div>
+                        </div>
+                        <div>
+                            <strong className="hostedby">HOSTED BY</strong>
+                            <p className="hostName">NewYork Travel Association International</p>
+                            <h1></h1>
+                            <button className="buttonstyle" type="button">
+                                <span >Contact</span>
+                            </button>
+                        </div>
+                    </HostWrapper>
+                </EventWrapper>
+                <CommentWrapper>
+                    {(comments.length === 0) ? <div className="centerparagraph"><p>No Rating yet ...</p></div> : <Stars rating={rating} displayScore={true} />}
+                    <div className="commentsContainer">
+                        <Comment eventId={id} comments={comments} setComments={setComments} setLoad={setLoading} />
+                    </div>
+                </CommentWrapper>
+                {/* <EventWrapper>
                     <EventList info={info}></EventList>
                     <HostWrapper>
                         <IconWrapper>
@@ -115,11 +184,11 @@ const Event = (Host) => {
                         {(isjoined)? <BookmarkAddedIcon />: <BookmarkAddIcon />}
                     </IconButton>
                     {(comments.length === 0) ? <p>No Rating</p> : <Stars rating={rating} displayScore={true} />}
-                </EventWrapper>
-                <div className='eventPageContainer'>
+                </EventWrapper> */}
+                {/* <div className='eventPageContainer'>
                     <div className="infoContainer">
                         <img className='photo' src={newyearpic} alt="new year" />
-                        <Paper elevation={3}>
+                        <Paper elevation={3} style={{ padding: "8px", margin: "10px 10px 8px 10px", border: "1px solid black" }}>
                             Description: <br />
                             {Host.Host.description}
                         </Paper>
@@ -128,7 +197,7 @@ const Event = (Host) => {
                     <div className="commentsContainer">
                         <Comment eventId={id} comments={comments} setComments={setComments} setLoad={setLoading} />
                     </div>
-                </div>
+                </div> */}
             </BodyWrapper>
         </Wrapper>
     )

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import ComplexGrid from '../components/Grid';
+import { useNavigate } from "react-router"
 
 const Wrapper = styled.div`
   height: 100%;
@@ -137,10 +138,6 @@ const AllEvent = () => {
             host: "oscar",
         },
     ]
-    const handleEvent = () => {
-
-    }
-
 
     function MultilineTextFields() {
         return (
@@ -177,6 +174,7 @@ const AllEvent = () => {
                             description={event.description}
                             host={event.host}
                             date={event.date}
+                            // onClick={handleEvent}
                         />
                     ))}
                 </AllEventsWrapper>
