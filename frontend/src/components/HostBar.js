@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add"
 import Grid from "@mui/material/Grid"
 import { useNavigate } from "react-router"
 import Notif from "./Notification"
-import Menu from "./Menu"
+import HostMenu from "./HostMenu"
 import EventModal from "../components/EventModal"
 import { useRent } from "../containers/hooks/useRent"
 
@@ -70,7 +70,7 @@ export default function HostBar() {
                 <AddIcon />
               </IconButton>
               <Notif />
-              <Menu />
+              <HostMenu />
             </Grid>
           </Toolbar>
         </AppBar>

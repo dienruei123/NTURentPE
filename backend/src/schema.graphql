@@ -31,7 +31,6 @@ type Event {
   imageURL: String
   tags: [String]
   description: String
-  imageURL: String
   maxparticipants: Int
 
   participants: [String]

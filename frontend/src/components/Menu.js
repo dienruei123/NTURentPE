@@ -40,6 +40,10 @@ export default function LongMenu() {
   }
   const handleMenuOptions = (key) => {
     switch (key) {
+      case "More Events": {
+        navigate("/allevents")
+        break
+      }
       case "Logout": {
         Logout()
         break
