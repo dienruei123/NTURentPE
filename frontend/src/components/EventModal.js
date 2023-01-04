@@ -40,6 +40,8 @@ const properties = ["entertainment", "academic"]
 export default function BasicModal({ open, handleClose, username }) {
   const [activityname, setActivityname] = useState("")
   const [hostname, setHostname] = useState(username)
+  const [picktimefrom, setPickTimefrom] = useState()
+  const [picktimeto, setPickTimeto] = useState()
   const [timefrom, setTimefrom] = useState()
   const [timeto, setTimeto] = useState()
   const [tags, setTags] = useState([])
@@ -48,6 +50,29 @@ export default function BasicModal({ open, handleClose, username }) {
   const { eventcreate } = useRent()
 
   const navigate = useNavigate()
+
+  const resetTime = () => {
+    const date = new Date()
+    const M = {
+      $D: date.getDate(),
+      $H: date.getHours(),
+      $L: "en",
+      $M: date.getMonth(),
+      $W: date.getDay(),
+      $d: date,
+      $m: date.getMinutes(),
+      $ms: date.getMilliseconds(),
+      $s: date.getSeconds(),
+      $y: date.getFullYear(),
+    }
+    // console.log(M)
+    setTimefrom(M)
+    setTimeto(M)
+  }
+
+  useEffect(() => {
+    resetTime()
+  }, [open])
 
   const handleSubmit = async () => {
     console.log(timefrom, timeto)
@@ -90,8 +115,6 @@ export default function BasicModal({ open, handleClose, username }) {
       })
 
       setActivityname("")
-      setTimefrom()
-      setTimeto()
       setTags([])
       setDescription("")
       setImageURL("")
@@ -160,16 +183,20 @@ export default function BasicModal({ open, handleClose, username }) {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                   label="from"
-                  value={timefrom}
+                  value={picktimefrom}
                   onChange={(newTime) => {
+                    setPickTimefrom(newTime)
                     setTimefrom(newTime)
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />
                 <DateTimePicker
                   label="to"
-                  value={timeto}
-                  onChange={(newTime) => setTimeto(newTime)}
+                  value={picktimeto}
+                  onChange={(newTime) => {
+                    setPickTimeto(newTime)
+                    setTimeto(newTime)
+                  }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>

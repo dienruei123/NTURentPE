@@ -13,6 +13,7 @@ export const REGISTER_MUTATION = gql`
       username
       identity
       events {
+        id
         eventname
         hostname
         eventdatefrom
@@ -37,21 +38,35 @@ export const LOGOUT_MUTATION = gql`
 `
 
 export const EVENT_MUTATION = gql`
-  mutation event($eventname: String!, $hostname: String!, 
-    $eventdatefrom: String!, $eventdateto: String!, $imageURL: String
-    $tags: [String!], $description: String!) {
-      event( eventname: $eventname, hostname: $hostname, 
-        eventdatefrom: $eventdatefrom, eventdateto: $eventdateto, imageURL: $imageURL
-        tags: $tags, description: $description) {
-          eventname
-          hostname
-          eventdatefrom
-          eventdateto
-          imageURL
-          tags
-          description
-        }
-    }`
+  mutation event(
+    $eventname: String!
+    $hostname: String!
+    $eventdatefrom: String!
+    $eventdateto: String!
+    $imageURL: String
+    $tags: [String!]
+    $description: String!
+  ) {
+    event(
+      eventname: $eventname
+      hostname: $hostname
+      eventdatefrom: $eventdatefrom
+      eventdateto: $eventdateto
+      imageURL: $imageURL
+      tags: $tags
+      description: $description
+    ) {
+      id
+      eventname
+      hostname
+      eventdatefrom
+      eventdateto
+      imageURL
+      tags
+      description
+    }
+  }
+`
 export const ADDTOEVENTLIST_MUTATION = gql`
   mutation addtoEventlist($username: String!, $eventname: String!) {
     addtoEventlist(username: $username, eventname: $eventname)

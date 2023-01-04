@@ -5,6 +5,7 @@ import {
   REGISTER_MUTATION,
   EVENT_MUTATION,
   ADDTOEVENTLIST_MUTATION,
+  EVENT_CREATED_SUBSCRIPTION,
 } from "../../graphql"
 import { createContext, useContext, useEffect, useState } from "react"
 import { USERS_QUERY } from "../../graphql/queries"
@@ -88,6 +89,26 @@ const RentProvider = (props) => {
       setSignedIn(false)
     }
   })
+
+  useEffect(() => {
+    subscribeToMore({
+      document: EVENT_CREATED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const event = subscriptionData.data.eventCreated
+
+        return {
+          users: {
+            id: prev.users.id,
+            username: prev.users.username,
+            identity: prev.users.identity,
+            events: [event, ...prev.users.events],
+            isLoggedIn: prev.users.isLoggedIn,
+          },
+        }
+      },
+    })
+  }, [subscribeToMore])
 
   return (
     <RentContext.Provider

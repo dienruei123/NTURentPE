@@ -6,6 +6,7 @@ export const USERS_QUERY = gql`
       username
       identity
       events {
+        id
         eventname
         hostname
         eventdatefrom
@@ -21,6 +22,7 @@ export const USERS_QUERY = gql`
 export const ALLEVENTS_QUERY = gql`
   query allEvents {
     allEvents {
+      id
       eventname
       hostname
       eventdatefrom
@@ -34,8 +36,9 @@ export const ALLEVENTS_QUERY = gql`
 `
 
 export const EVENT_QUERY = gql`
-  query event($eventname: String!) {
-    event(eventname: $eventname) {
+  query event($id: ID!) {
+    event(id: $id) {
+      id
       eventname
       hostname
       eventdatefrom

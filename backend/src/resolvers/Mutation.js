@@ -44,13 +44,25 @@ const Mutation = {
     // console.log(verify)
     return token
   },
-  register: async (parent, { username, passwd, identity }, { UserModel }) => {
+  register: async (
+    parent,
+    { username, passwd, identity },
+    { UserModel, CounterModel }
+  ) => {
     let user = await UserModel.findOne({ username })
     if (user) throw new GraphQLError(`USER_EXISTING_ERROR`)
 
+    let counter = await CounterModel.findOne({})
+    if (!counter) {
+      counter = await new CounterModel({
+        userId: 1,
+        eventId: 1,
+      })
+    }
+
     const hashedPassword = await bcrypt.hash(passwd, 10)
     user = await new UserModel({
-      id: uuidv4(),
+      id: counter.userId,
       username,
       passwd: hashedPassword,
       // passwd,
@@ -58,6 +70,8 @@ const Mutation = {
       isLoggedIn: false,
       loggedInAt: new Date().getTime(),
     }).save()
+    counter.userId += 1
+    await counter.save()
     console.log(user)
     // return user
     return user.populate("events")
@@ -81,9 +95,18 @@ const Mutation = {
       imageURL,
       description,
     },
-    { UserModel, EventModel, pubsub }
+    { UserModel, EventModel, CounterModel, pubsub }
   ) => {
+    let counter = await CounterModel.findOne({})
+    if (!counter) {
+      counter = await new CounterModel({
+        userId: 1,
+        eventId: 1,
+      })
+    }
+
     let event = await new EventModel({
+      id: counter.eventId,
       eventname,
       hostname,
       eventdatefrom,
@@ -91,13 +114,17 @@ const Mutation = {
       imageURL: imageURL || "0",
       description,
     })
-    console.log(event.imageURL)
+    // console.log(event.imageURL)
     tags.map((e) => event.tags.push(e))
     await event.save()
     let user = await UserModel.findOne({ username: hostname })
     user.events.push(event)
     await user.save()
     await user.populate(["events"])
+
+    counter.eventId += 1
+    await counter.save()
+    console.log(event)
     pubsub.publish("EVENT_CREATED", {
       eventCreated: event,
     })
