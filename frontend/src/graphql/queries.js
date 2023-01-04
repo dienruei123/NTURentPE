@@ -5,6 +5,15 @@ export const USERS_QUERY = gql`
     users(token: $token) {
       username
       identity
+      events {
+        eventname
+        hostname
+        eventdatefrom
+        eventdateto
+        imageURL
+        tags
+        description
+      }
     }
   }
 `

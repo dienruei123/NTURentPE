@@ -6,7 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import { useRent } from "../containers/hooks/useRent"
 import { useNavigate } from "react-router"
 
-const options = ["Settings", "More Events", "Logout"]
+const options = ["Settings", "Logout"]
 
 const ITEM_HEIGHT = 48
 
@@ -40,10 +40,6 @@ export default function LongMenu() {
   }
   const handleMenuOptions = (key) => {
     switch (key) {
-      case "More Events": {
-        navigate("/allevents")
-        break
-      }
       case "Logout": {
         Logout()
         break

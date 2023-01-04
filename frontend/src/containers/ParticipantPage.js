@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Calendar from "../components/Calendar"
 import EventList from "../components/EventList"
@@ -23,35 +23,61 @@ const BodyWrapper = styled.div`
   overflow: auto;
 `
 
+const CalendarWrapper = styled.div`
+  height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0; 
+  left: 0;
+`
+
 const EventWrapper = styled.div`
   height: 100%;
   width: 30%;
-
+  margin-left: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   overflow: auto;
+  z-index: -1;
 `
 
 const Participant = () => {
-  const useRentContext = useRent()
-  const { username } = useRentContext
   const [info, setInfo] = useState([
     {
       date: "12/31",
       name: "New Year",
-      subtitle: "time flies",
       property: ["popular", "nice"],
     },
   ])
+  const { data } = useRent()
+  const [userInfo, setUserInfo] = useState([])
+
+  useEffect(()=>{
+    if (data.users.events.length) {
+      let newUserInfo = []
+      data.users.events.map(e=>{
+        let timefrom = new Date(parseInt(e.eventdatefrom))
+        let timeto = new Date(parseInt(e.eventdateto))
+        const date = `Date From ${timefrom}, Date to ${timeto}`
+        newUserInfo.push({name: e.eventname, date: date, property: e.tags})      
+      })
+    }
+  },[data])
 
   return (
     <Wrapper>
       <BodyWrapper>
-        <Calendar />
+        <CalendarWrapper>
+          <Calendar />
+        </CalendarWrapper>
         <EventWrapper>
-          <EventList info={info}></EventList>
+          <EventList info={userInfo}></EventList>
         </EventWrapper>
       </BodyWrapper>
     </Wrapper>
