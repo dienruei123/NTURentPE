@@ -1,7 +1,7 @@
 const Subscription = {
     eventCreated: {
-      subscribe: (parent, args, {pubSub}) => {
-        return pubSub.subscribe('EVENT_CREATED');
+      subscribe: (parent, args, {pubsub}) => {
+        return pubsub.subscribe('EVENT_CREATED');
       },
     },
   };

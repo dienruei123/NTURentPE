@@ -7,6 +7,7 @@ export const EVENT_CREATED_SUBSCRIPTION = gql`
       hostname
       eventdatefrom
       eventdateto
+      imageURL
       tags
       description
     }

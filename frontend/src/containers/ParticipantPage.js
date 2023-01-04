@@ -23,15 +23,28 @@ const BodyWrapper = styled.div`
   overflow: auto;
 `
 
+const CalendarWrapper = styled.div`
+  height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0; 
+  left: 0;
+`
+
 const EventWrapper = styled.div`
   height: 100%;
   width: 30%;
-
+  margin-left: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   overflow: auto;
+  z-index: -1;
 `
 
 const Participant = () => {
@@ -43,19 +56,26 @@ const Participant = () => {
     },
   ])
   const { data } = useRent()
-  let userInfo = []
+  const [userInfo, setUserInfo] = useState([])
 
   useEffect(()=>{
-    data.users.events.map(e=>{
-      const date = `Date From ${e.eventdatefrom}, Date to ${e.eventdateto}`
-      userInfo.push({name: e.eventname, date: date, property: e.tags})      
-    })
+    if (data.users.events.length) {
+      let newUserInfo = []
+      data.users.events.map(e=>{
+        let timefrom = new Date(parseInt(e.eventdatefrom))
+        let timeto = new Date(parseInt(e.eventdateto))
+        const date = `Date From ${timefrom}, Date to ${timeto}`
+        newUserInfo.push({name: e.eventname, date: date, property: e.tags})      
+      })
+    }
   },[data])
 
   return (
     <Wrapper>
       <BodyWrapper>
-        <Calendar />
+        <CalendarWrapper>
+          <Calendar />
+        </CalendarWrapper>
         <EventWrapper>
           <EventList info={userInfo}></EventList>
         </EventWrapper>
