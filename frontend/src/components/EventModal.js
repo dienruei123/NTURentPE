@@ -62,6 +62,9 @@ export default function BasicModal({ open, handleClose, username }) {
       window.alert("Please choose the time that activity ends!")
       return
     }
+    if(timeto.$d.getTime()<timefrom.$d.getTime()){
+      window.alert('Start time should be earlier than End time')
+    }
     if (!tags) {
       window.alert("Please choose some properties for the activity!")
       return
