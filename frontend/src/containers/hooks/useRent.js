@@ -8,6 +8,7 @@ import {
   EVENT_CREATED_SUBSCRIPTION,
   EVENT_JOINED_SUBSCRIPTION,
   EVENT_CANCELED_SUBSCRIPTION,
+  ADDCOMMENT_MUTATION,
 } from "../../graphql"
 import { createContext, useContext, useEffect, useState } from "react"
 import { USERS_QUERY } from "../../graphql/queries"
@@ -49,6 +50,7 @@ const RentProvider = (props) => {
   const [register] = useMutation(REGISTER_MUTATION)
   const [logout] = useMutation(LOGOUT_MUTATION)
   const [eventcreate] = useMutation(EVENT_MUTATION)
+  const [addComment] = useMutation(ADDCOMMENT_MUTATION)
 
   const [addtoEventlist] = useMutation(ADDTOEVENTLIST_MUTATION)
   //   useEffect(() => {
@@ -93,11 +95,40 @@ const RentProvider = (props) => {
   useEffect(() => {
     try {
       subscribeToMore({
+        document: EVENT_CREATED_SUBSCRIPTION,
+        variables: {
+          hostname: username,
+        },
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev
+          const event = subscriptionData.data.eventCreated
+          return {
+            users: {
+              id: prev.users.id,
+              username: prev.users.username,
+              identity: prev.users.identity,
+              events: [...prev.users.events, event],
+              isLoggedIn: prev.users.isLoggedIn,
+            },
+          }
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [subscribeToMore])
+
+  useEffect(() => {
+    try {
+      subscribeToMore({
         document: EVENT_JOINED_SUBSCRIPTION,
+        variables: {
+          username: username,
+        },
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev
           const event = subscriptionData.data.eventJoined
-          console.log(event)
+          console.log(prev)
           return {
             users: {
               id: prev.users.id,
@@ -118,6 +149,9 @@ const RentProvider = (props) => {
     try {
       subscribeToMore({
         document: EVENT_CANCELED_SUBSCRIPTION,
+        variables: {
+          username: username,
+        },
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev
           const event = subscriptionData.data.eventCanceled
@@ -137,29 +171,6 @@ const RentProvider = (props) => {
       console.log(e)
     }
   })
-
-  useEffect(() => {
-    try {
-      subscribeToMore({
-        document: EVENT_CREATED_SUBSCRIPTION,
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) return prev
-          const event = subscriptionData.data.eventCreated
-          return {
-            users: {
-              id: prev.users.id,
-              username: prev.users.username,
-              identity: prev.users.identity,
-              events: [...prev.users.events, event],
-              isLoggedIn: prev.users.isLoggedIn,
-            },
-          }
-        },
-      })
-    } catch (e) {
-      console.log(e)
-    }
-  }, [subscribeToMore])
 
   return (
     <RentContext.Provider
@@ -186,6 +197,7 @@ const RentProvider = (props) => {
         register,
         logout,
         eventcreate,
+        addComment,
         addtoEventlist,
         subscribeToMore,
       }}

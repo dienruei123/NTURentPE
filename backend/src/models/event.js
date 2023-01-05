@@ -25,7 +25,15 @@ const EventSchema = new Schema({
   // Event subs
   participants: [{ type: String }],
   rating: Number,
-  comments: [{ sender: String, body: String }],
+  comments: [
+    {
+      id: Number,
+      sender: String,
+      stars: Number,
+      body: String,
+      createdAt: String,
+    },
+  ],
   onclicks: Number,
 
   // For admin

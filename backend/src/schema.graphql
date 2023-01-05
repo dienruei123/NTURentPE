@@ -18,12 +18,20 @@ type Mutation {
     tags: [String!]
     description: String!
   ): String!
+  addComment(
+    eventId: ID!
+    sender: String!
+    stars: Int!
+    body: String!
+    createdAt: String!
+  ): String!
 }
 
 type Subscription {
-  eventCreated: Event!
-  eventJoined: Event!
-  eventCanceled: Event!
+  eventCreated(hostname: String!): Event!
+  eventJoined(username: String!): Event!
+  eventCanceled(username: String!): Event!
+  commented(eventId: ID!): Comment!
 }
 
 type User {
@@ -55,6 +63,9 @@ type Event {
 }
 
 type Comment {
-  sender: String!
-  body: String!
+  id: ID
+  sender: String
+  stars: Int
+  body: String
+  createdAt: String
 }
