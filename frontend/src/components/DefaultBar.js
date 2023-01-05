@@ -39,15 +39,16 @@ export default function DefaultBar() {
             variant="h6"
             component="div"
             sx={{ cursor: "pointer" }}
+            style={{ fontFamily: "raisonne-demibold, Raisonne, Futura, Helvetica, Arial, sans-serif" }}
             onClick={() => navigate("/")}
           >
             Event Registration Center
           </Typography>
           <Grid>
-            <Button color="inherit" onClick={() => navigate("/register")}>
+            <Button color="inherit" style={{ fontFamily: "raisonne-demibold, Raisonne, Futura, Helvetica, Arial, sans-serif" }} onClick={() => navigate("/register")}>
               sign up
             </Button>
-            <Button color="inherit" onClick={() => navigate("/login")}>
+            <Button color="inherit" style={{ fontFamily: "raisonne-demibold, Raisonne, Futura, Helvetica, Arial, sans-serif" }} onClick={() => navigate("/login")}>
               Login
             </Button>
           </Grid>

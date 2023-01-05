@@ -148,7 +148,7 @@
 
 .photo {
     width: 100%;
-    height: 100%
+    height: 400px;
 }
 
 .mainpictureContainer {
@@ -156,7 +156,7 @@
     margin-left: 1.5em;
     padding: 0.5em;
     border: 1px solid black;
-    width: 70%;
+    width: 80%;
     height: 30%;
     display: flex;
     flex-direction: row;
@@ -167,13 +167,13 @@
 .mainpicture {
     width: 70%;
     height: 100%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .infoContainer {
     width: 30%;
     height: 100%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
