@@ -57,6 +57,7 @@ const Mutation = {
       counter = await new CounterModel({
         userId: 1,
         eventId: 1,
+        commentId: 1,
       })
     }
 
@@ -102,6 +103,7 @@ const Mutation = {
       counter = await new CounterModel({
         userId: 1,
         eventId: 1,
+        commentId: 1,
       })
     }
 
@@ -113,6 +115,9 @@ const Mutation = {
       eventdateto,
       imageURL: imageURL,
       description,
+      rating: 0,
+      comments: [],
+      verified: true,
     })
     // console.log(event.imageURL)
     tags.map((e) => event.tags.push(e))
@@ -125,7 +130,7 @@ const Mutation = {
     counter.eventId += 1
     await counter.save()
     console.log(event)
-    pubsub.publish("EVENT_CREATED", {
+    pubsub.publish(`EVENT_CREATED_${hostname}`, {
       eventCreated: event,
     })
     return "EVENT_CREATED"
@@ -151,22 +156,59 @@ const Mutation = {
         user.events.findIndex((event) => event.id === eventId),
         1
       )
-      pubsub.publish("EVENT_CANCELED", {
+      pubsub.publish(`EVENT_CANCELED_${username}`, {
         eventCanceled: event,
       })
       status = "EVENT_CANCELED"
     } else {
       event.participants.push(username)
       user.events.push(event)
-      pubsub.publish("EVENT_JOINED", {
+      // console.log(`EVENT_JOINED_${username}`)
+      pubsub.publish(`EVENT_JOINED_${username}`, {
         eventJoined: event,
       })
       status = "EVENT_JOINED"
     }
     await event.save()
     await user.save()
-    console.log(user.event)
+    // console.log(user.events)
     return status
+  },
+  addComment: async (
+    parent,
+    { eventId, sender, stars, body, createdAt },
+    { EventModel, CounterModel, pubsub }
+  ) => {
+    let event = await EventModel.findOne({ id: eventId })
+    let counter = await CounterModel.findOne({})
+    if (!counter) {
+      counter = await new CounterModel({
+        userId: 1,
+        eventId: 1,
+        commentId: 1,
+      })
+    }
+    let comment = {
+      id: counter.commentId,
+      sender: sender,
+      stars: stars,
+      body: body,
+      createdAt: createdAt,
+    }
+
+    counter.commentId += 1
+    await counter.save()
+    // console.log(event.rating)
+    event.rating =
+      (event.rating * event.comments.length + stars) /
+      (event.comments.length + 1)
+    // console.log(event.rating)
+    event.comments.push(comment)
+    await event.save()
+    pubsub.publish(`COMMENTED_${eventId}`, {
+      commented: comment,
+    })
+    return "COMMENTED"
   },
 }
 export default Mutation

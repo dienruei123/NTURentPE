@@ -15,6 +15,14 @@ export const USERS_QUERY = gql`
         imageURL
         tags
         description
+        rating
+        comments {
+          id
+          sender
+          stars
+          body
+          createdAt
+        }
       }
     }
   }
@@ -32,6 +40,14 @@ export const ALLEVENTS_QUERY = gql`
       description
       imageURL
       maxparticipants
+      rating
+      comments {
+        id
+        sender
+        stars
+        body
+        createdAt
+      }
     }
   }
 `
@@ -48,6 +64,14 @@ export const EVENT_QUERY = gql`
       description
       imageURL
       maxparticipants
+      rating
+      comments {
+        id
+        sender
+        stars
+        body
+        createdAt
+      }
     }
   }
 `

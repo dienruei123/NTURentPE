@@ -6,6 +6,7 @@ const { Schema } = mongoose
 const CounterSchema = new Schema({
   userId: Number,
   eventId: Number,
+  commentId: Number,
 })
 const CounterModel = mongoose.model("Counter", CounterSchema)
 export default CounterModel

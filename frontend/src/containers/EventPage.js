@@ -15,10 +15,11 @@ import StyleIcon from "@mui/icons-material/Style"
 import FestivalIcon from "@mui/icons-material/Festival"
 import Chip from "@mui/material/Chip"
 import Stack from "@mui/material/Stack"
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import { EVENT_QUERY } from "../graphql/queries.js"
 import { weekdays } from "moment"
 import "./css/eventPage.css"
+import { COMMENTED_SUBSCRIPTION } from "../graphql"
 
 const Wrapper = styled.div`
   height: 100%;
@@ -79,25 +80,72 @@ const Event = () => {
   const useRentContext = useRent()
   const { username, addtoEventlist } = useRentContext
   const { identity } = useRentContext
-  const { userEvents } = useRentContext
-  const { data, error } = useQuery(EVENT_QUERY, {
+  const { userEvents, addComment } = useRentContext
+  const { data, error, subscribeToMore } = useQuery(EVENT_QUERY, {
     variables: {
       id: id,
     },
+    pollInterval: 1,
   })
+  // console.log(data)
   // console.log(data.event, error)
   // const { event } = data
-  //   console.log(event)
-  const [open, setOpen] = useState(true)
+  // console.log(event)
+  // const [open, setOpen] = useState(true)
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const [isjoined, setIsjoined] = useState(false)
+  const [rating, setRating] = useState(0)
 
   useEffect(() => {
-    console.log(userEvents)
+    // console.log(userEvents)
     if (userEvents.some((event) => event.id === id)) setIsjoined(true)
     else setIsjoined(false)
   }, [])
+
+  useEffect(() => {
+    if (data && !error) {
+      setComments(data.event.comments)
+      // console.log(data.event.comments)
+    }
+  }, [data])
+
+  useEffect(() => {
+    try {
+      subscribeToMore({
+        document: COMMENTED_SUBSCRIPTION,
+        variables: {
+          eventId: id,
+        },
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev
+          const comment = subscriptionData.data.commented
+          console.log(prev)
+          setRating(
+            (rating) =>
+              (rating * prev.event.comments.length + comment.stars) /
+              (prev.event.comments.length + 1)
+          )
+          console.log(
+            (rating * prev.event.comments.length + comment.stars) /
+              (prev.event.comments.length + 1)
+          )
+          return {
+            event: {
+              ...prev.event,
+              rating:
+                (prev.event.rating * prev.event.comments.length +
+                  comment.stars) /
+                (prev.event.comments.length + 1),
+              comments: [...prev.event.comments, comment],
+            },
+          }
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [subscribeToMore])
 
   const toDateString = (date) => {
     const newDate = new Date(parseInt(date))
@@ -111,11 +159,12 @@ const Event = () => {
     )
   }
 
-  let rating = 0
-  for (let i = 0; i < comments.length; i++) {
-    rating += comments[i].rating
-  }
-  rating = rating / comments.length
+  // let rating = 0
+  // for (let i = 0; i < comments.length; i++) {
+  //   rating += comments[i].rating
+  // }
+  // rating = rating / comments.length
+
   const AddToEventlist = async () => {
     try {
       const { data } = await addtoEventlist({
@@ -235,15 +284,16 @@ const Event = () => {
               </div>
             ) : (
               <div className="centerparagraph">
-                <Stars rating={rating} displayScore={true} />
+                <Stars rating={data.event.rating} displayScore={true} />
               </div>
             )}
             <div className="commentsContainer">
               <Comment
+                username={username}
                 eventId={id}
                 comments={comments}
-                setComments={setComments}
                 setLoad={setLoading}
+                addComment={addComment}
               />
             </div>
           </CommentWrapper>
