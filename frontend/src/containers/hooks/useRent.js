@@ -38,6 +38,7 @@ const RentProvider = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [userEvents, setUserEvents] = useState([])
   const [renderLoading, setRenderLoading] = useState(true)
+  const [searchEvent, setSearchEvent] = useState("")
 
   const { data, loading, error, subscribeToMore } = useQuery(USERS_QUERY, {
     variables: {
@@ -58,6 +59,16 @@ const RentProvider = (props) => {
   //       localStorage.setItem(LOCALSTORAGE_KEY, username)
   //     }
   //   }, [signedIn])
+
+  const toDateString = (date) => {
+    const weekDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const newDate = new Date(parseInt(date))
+    return weekDay[newDate.getDay()] + ', ' + newDate.toLocaleDateString("en-US", {
+      // year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  }
 
   useEffect(() => {
     localStorage.setItem(LOCALSTORAGE_REMEMBER, remUser)
@@ -183,8 +194,10 @@ const RentProvider = (props) => {
         userEvents,
         token,
         renderLoading,
+        searchEvent,
         data,
         loading,
+
         setUsername,
         setPasswd,
         setIdentity,
@@ -193,6 +206,7 @@ const RentProvider = (props) => {
         setUserEvents,
         setToken,
         setRenderLoading,
+        setSearchEvent,
         login,
         register,
         logout,
@@ -200,6 +214,7 @@ const RentProvider = (props) => {
         addComment,
         addtoEventlist,
         subscribeToMore,
+        toDateString,
       }}
       {...props}
     />

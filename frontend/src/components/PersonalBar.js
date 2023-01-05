@@ -45,6 +45,7 @@ export default function PersonalBar() {
             variant="h6"
             component="div"
             sx={{ cursor: "pointer" }}
+            style={{ fontFamily: "raisonne-demibold, Raisonne, Futura, Helvetica, Arial, sans-serif" }}
             onClick={() => navigate("/")}
           >
             {username}'s Event

@@ -49,7 +49,7 @@ const EventWrapper = styled.div`
 const weekDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 const Host = () => {
-  const { userEvents, data, subscribeToMore } = useRent()
+  const { userEvents, toDateString } = useRent()
   const [userInfo, setUserInfo] = useState([])
 
   useEffect(() => {
@@ -70,18 +70,18 @@ const Host = () => {
     setUserInfo(newUserInfo)
   }, [userEvents])
 
-  const toDateString = (date) => {
-    const newDate = new Date(parseInt(date))
-    return (
-      weekDay[newDate.getDay()] +
-      " " +
-      newDate.toLocaleDateString("en-US", {
-        year: "2-digit",
-        month: "numeric",
-        day: "numeric",
-      })
-    )
-  }
+  // const toDateString = (date) => {
+  //   const newDate = new Date(parseInt(date))
+  //   return (
+  //     weekDay[newDate.getDay()] +
+  //     " " +
+  //     newDate.toLocaleDateString("en-US", {
+  //       year: "2-digit",
+  //       month: "numeric",
+  //       day: "numeric",
+  //     })
+  //   )
+  // }
 
   return (
     <Wrapper>
